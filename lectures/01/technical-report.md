@@ -346,9 +346,9 @@ response = SimpleNamespace(
 uv run pytest -q tests/test_ask.py
 ```
 
-## 9. 提出後の見直し（2026-10-26、締切後に追記）
+## 9. 提出後の見直し（2026-10-26、提出後に追記）
 
-結果の詳細は [answer.md の「提出後の見直し」](./answer.md#提出後の見直し2026-10-26締切後に追記) にあります。ここでは、再計測に使ったコードの要点だけを説明します。計測スクリプトは [homework/measure.py](./homework/measure.py) です。
+結果の詳細は [answer.md の「提出後の見直し」](./answer.md#提出後の見直し2026-10-26提出後に追記) にあります。ここでは、再計測に使ったコードの要点だけを説明します。計測スクリプトは [homework/measure.py](./homework/measure.py) です。
 
 ```bash
 uv run python lectures/01/homework/measure.py basic         --out <出力ディレクトリ>   # temperature 0.0/0.7/1.2 × 各3回
