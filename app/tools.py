@@ -14,6 +14,7 @@ from pathlib import Path
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 LEARNING_LOG_DIR = Path(__file__).resolve().parent.parent / "learning_log"  # .gitignore 済み。テストでは差し替える
 MAX_RESULTS = 3
+NUM_LECTURES = 13  # AIE2026 は全13回
 
 
 @cache
@@ -89,7 +90,11 @@ def make_quiz(lecture: int) -> str:
     「第2回の確認問題を出して」「LoRAの回の復習クイズがほしい」のように、
     学習者が理解度を確かめる問題を求めたときに使う。問題だけを先に見せ、
     answer（用語集の定義）は学習者が答えたあとに示すこと。
+    lecture は 1〜13（AIE2026 は全13回）。範囲外ならエラーになる。
     """
+    if not 1 <= lecture <= NUM_LECTURES:
+        # 存在しない回はツールの使い方の誤りなので、例外にしてモデルに引数を直させる（第5回 宿題）
+        raise ValueError(f"lecture は 1〜{NUM_LECTURES} の整数で指定してください（AIE2026 は全{NUM_LECTURES}回）。指定された値: {lecture}")
     candidates = [e for e in load_glossary() if e["lecture"] == lecture]
     if not candidates:
         available = sorted({e["lecture"] for e in load_glossary()})

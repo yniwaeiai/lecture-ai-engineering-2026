@@ -2,6 +2,8 @@
 
 import json
 
+import pytest
+
 from app import tools
 
 
@@ -58,7 +60,13 @@ def test_make_quiz_picks_a_term_of_the_lecture():
 
 
 def test_make_quiz_reports_lecture_without_terms():
-    assert "用語集にありません" in tools.make_quiz(99)
+    assert "用語集にありません" in tools.make_quiz(4)   # 第4回は範囲内だが、用語集に用語がない
+
+
+def test_make_quiz_rejects_lecture_out_of_range():
+    for lecture in [0, 14, 99, -1]:
+        with pytest.raises(ValueError, match="1〜13"):
+            tools.make_quiz(lecture)
 
 
 def test_save_learning_log_writes_markdown_inside_log_dir(monkeypatch, tmp_path):
