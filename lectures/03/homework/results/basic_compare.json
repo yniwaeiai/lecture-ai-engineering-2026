@@ -1,0 +1,682 @@
+[
+  {
+    "variant": "V0_base",
+    "question": "Q1_lora_qlora",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1454,
+    "output_tokens": 172,
+    "output": "LoRAとQLoRAの違いは、ベースモデルの重みをそのまま使うか、量子化してメモリをさらに節約するかにあります。\n\n* **LoRA**: 事前学習済みの重みは固定したまま、更新分（低ランク行列）だけを学習することで、学習パラメータとメモリを削減する手法です。\n* **QLoRA**: ベースモデルの重みを4ビットなどに量子化（Quantization）してメモリをさらに大幅に節約した上で、LoRAによる学習を行う手法です。これにより、より大きなモデルを比較的小さなGPUでも扱えるようになります。\n\n関係する回：第2回"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q1_lora_qlora",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1454,
+    "output_tokens": 166,
+    "output": "LoRAとQLoRAの主な違いは、**ベースモデルの重みの保持方法（量子化の有無）**にあります。\n\n* **LoRA**: 事前学習済みの重みは固定したまま、更新分を表す小さな低ランク行列（アダプタ）のみを学習します。\n* **QLoRA**: LoRAの仕組みに加え、ベースモデルの重みを4ビットなどに**量子化**してメモリを大幅に節約した状態で学習を行います。これにより、より大きなモデルを比較的小さなGPUでも効率よく扱えるようになります。\n\n関係する回：第2回"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q2_lecture3",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "get_lecture_summary",
+        "args": {
+          "lecture": 3
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1365,
+    "output_tokens": 214,
+    "output": "第3回では**「AIエージェント」**について学びます。\n\n### おもな内容\n- **AIエージェントの基本構造**：「モデル ＋ ループ ＋ ツール」の組み合わせにより、LLMが自律的に行動する仕組みを理解します。\n- **ツールの活用とエージェントループ**：LLMがツール（関数）の呼び出しを判断し、実行結果を受け取って次の行動を決める仕組みや、そのコスト（応答時間・料金など）について学びます。\n- **ハーネスとフレームワーク**：LLMを包むプログラム（ハーネス）や、Pydantic AI、ADKといったフレームワークを使ったエージェントの実装方法を学びます。\n- **ガードレールとHuman-in-the-loop**：安全な運用のための制限や、人間の確認を挟む仕組みについて触れます。\n\n（関連回：第3回）"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q2_lecture3",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "get_lecture_summary",
+        "args": {
+          "lecture": 3
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1365,
+    "output_tokens": 250,
+    "output": "第3回では**「AIエージェント」**について学びます。\n\n主な内容は以下の通りです：\n\n1. **AIエージェントの基本構造**\n   - LLM（モデル）、自律的な実行（ループ）、外部機能の利用（ツール）を組み合わせた仕組みを理解します。\n2. **ツールとツールの説明文**\n   - モデルがどのようにツールを選び、引数を決めるかを学び、適切な説明文の書き方を体験します。\n3. **エージェントループとコスト**\n   - 複数回LLMを呼び出すことによる、時間や料金、レート制限への影響を学びます。\n4. **Pydantic AI やフレームワークの活用**\n   - 型定義を活用したエージェントの実装や、APIを使わずに動作確認できる「TestModel」などの手法を扱います。\n5. **ガードレールとHuman-in-the-loop**\n   - 危険な操作を防ぐための権限管理や、人の確認を挟む仕組みについて学びます。\n\n（関連する回：第3回）"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q3_rag",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      }
+    ],
+    "requests": 3,
+    "input_tokens": 1740,
+    "output_tokens": 176,
+    "output": "用語集を確認したところ、「RAG」という直接の用語は登録されていませんでしたが、関連する知識として第2回の解説等に言及があります。\n\n一般的に **RAG（Retrieval-Augmented Generation / 検索拡張生成）** とは、大規模言語モデル（LLM）が回答を生成する際、事前に外部のデータベースやドキュメントから関連する情報を「検索」し、その情報を組み込んで（拡張して）回答を作る仕組みのことです。\n\nLLM単体では知らない最新の情報や、社内文書などの非公開データを参照させたい場合に有効な手法とされています。\n\n（関連する学習テーマ：第2回）"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q3_rag",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      }
+    ],
+    "requests": 3,
+    "input_tokens": 1740,
+    "output_tokens": 224,
+    "output": "AIエンジニアリング講座の用語集を確認したところ、「RAG」という用語自体の詳細な定義や専用の項目は、現在の用語集にはまだ登録されていないようです。\n\nただ、関連する概念として、第2回の「ファインチューニング」の定義の中で「外部データを参照させる」仕組みとしてRAGのようなアプローチに触れられています。\n\n一般的なAIエンジニアリングの文脈において、**RAG（Retrieval-Augmented Generation：検索拡張生成）**とは、大規模言語モデル（LLM）が回答を生成する際、あらかじめ社内文書やデータベースなどの外部ソースから関連する情報を検索（Retrieval）し、その情報をプロンプトに含めて参照させることで、ハルシネーション（誤った情報の生成）を防ぎ、最新や特定の情報に基づいた正確な回答を得る技術のことです。\n\n関係する回：第2回"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q4_quiz",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 981,
+    "output_tokens": 55,
+    "output": "それでは、第2回の内容から確認問題を出します！\n\n**Q. 「学習率」の意味は何でしょうか？**\n\nあなたの言葉で教えてくださいね。答えが分かったら教えてください！"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q4_quiz",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1024,
+    "output_tokens": 68,
+    "output": "第2回の学習内容から確認問題を出します！\n\n**問題：**\n「**LoRA**」とはどのような手法でしょうか？ その意味や特徴を説明してください。\n\n答えがわかったら教えてくださいね！\n\n（関連：第2回）"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q5_general",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "リスト"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 938,
+    "output_tokens": 284,
+    "output": "用語集には「リスト」の定義はありませんでしたが、一般的なPythonのプログラミングにおけるリストの逆順にする方法についてお答えします。\n\nPythonでリストを逆順にする方法は、主にいくつかあります。\n\n1. **`reversed()` 関数を使う**\n   元のリストを変更せずに、逆順のイテレータを返します。リストに戻すには `list(reversed(my_list))` とします。\n   ```python\n   my_list = [1, 2, 3]\n   reversed_list = list(reversed(my_list))\n   ```\n\n2. **`reverse()` メソッドを使う**\n   元のリストそのものをその場で逆順に変更（破壊的変更）します。新しいリストは作成されません。\n   ```python\n   my_list = [1, 2, 3]\n   my_list.reverse()\n   ```\n\n3. **スライス（Slicing）を使う**\n   スライス構文を使って、逆順にした新しいリストを作成できます。\n   ```python\n   my_list = [1, 2, 3]\n   reversed_list = my_list[::-1]\n   ```\n\n用途に合わせて使い分けてみてください。\n\n（関連する回はありません）"
+  },
+  {
+    "variant": "V0_base",
+    "question": "Q5_general",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "リスト"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 938,
+    "output_tokens": 380,
+    "output": "用語集には登録されていませんが、一般的なPythonのプログラミングにおけるリストを逆順にする方法についてお答えします。\n\nPythonでリストを逆順にするには、主に以下のいくつかの方法があります。\n\n1. **`reverse()`メソッドを使う（リスト自体を変更する場合）**\n   リストのメソッドを直接呼び出すと、元のリストそのものの順番が逆順に書き換わります。\n   ```python\n   my_list = [1, 2, 3]\n   my_list.reverse()\n   print(my_list)  # 出力: [3, 2, 1]\n   ```\n\n2. **スライス（`[::-1]`）を使う（新しいリストを作る場合）**\n   元のリストを変更したくない場合は、スライス機能を使うと逆順になった新しいリストを作成できます。\n   ```python\n   my_list = [1, 2, 3]\n   reversed_list = my_list[::-1]\n   print(reversed_list)  # 出力: [3, 2, 1]\n   ```\n\n3. **`reversed()`関数を使う（イテレータとして扱う場合）**\n   ビルトイン関数の`reversed()`を使う方法もあります。返り値はイテレータなので、リストに戻すには`list()`で囲みます。\n   ```python\n   my_list = [1, 2, 3]\n   reversed_list = list(reversed(my_list))\n   print(reversed_list)  # 出力: [3, 2, 1]\n   ```\n\n用途に合わせて使い分けてみてください。\n\n（関連する回：特に指定なし）"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q1_lora_qlora",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1252,
+    "output_tokens": 478,
+    "output": "**LoRA**と**QLoRA**は、どちらも大規模言語モデル（LLM）の効率的なファインチューニング（PEFT）を行うための手法ですが、大きな違いは**「ベースモデルの重みの保持方法（精度）」**にあります。\n\nそれぞれの特徴と違いは以下の通りです。\n\n### 1. LoRA（Low-Rank Adaptation）\n* **仕組み**: 事前学習済みの重みを固定（凍結）し、重みの更新分を小さな低ランク行列（アダプタ）だけで近似して学習します。\n* **特徴**: 学習するパラメータ数が大幅に削減され、メモリとストレージを節約できます。\n* **精度**: 通常、モデルの重みはそのまま（FP16やBF16など）の精度でメモリに保持されます。\n\n### 2. QLoRA（Quantized LoRA）\n* **仕組み**: LoRAの仕組みをベースにしながら、**ベースモデルの重みを4ビット（4-bit NormalFloatなど）に強く量子化**してメモリ消費量をさらに劇的に削減します。その上でLoRAの学習を行います（逆伝播時には工夫された逆量子化などを用います）。\n* **特徴**: LoRAよりもさらに必要なVRAM（GPUメモリ）を抑えられるため、限られたGPU環境でもより大きなモデルをファインチューニングできるようになります。\n\n---\n\n### まとめ（比較表）\n\n| 項目 | LoRA | QLoRA |\n| :--- | :--- | :--- |\n| **ベースモデルの精度** | 通常（FP16 / BF16 など） | 4ビットなどに量子化 |\n| **必要なGPUメモリ（VRAM）** | QLoRAよりは多い | 非常によく節約できる |\n| **主な目的** | パラメータ数と学習コストの削減 | さらに極小のVRAMでの大規模モデル学習 |\n\n本講座（AIE2026）の第2回では、これらの仕組みや違い（および量子化の影響など）について詳しく学び、演習を通じて体験します！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q1_lora_qlora",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1252,
+    "output_tokens": 460,
+    "output": "**LoRA**と**QLoRA**は、どちらも大規模言語モデル（LLM）の効率的なファインチューニング（PEFT）を行うための技術ですが、主な違いは**ベースモデルの「精度（ビット数）」**と**「必要なGPUメモリの量」**にあります。\n\nそれぞれの特徴と違いをまとめると以下のようになります。\n\n### 1. LoRA（Low-Rank Adaptation）\n* **仕組み**: 事前学習済みの重み（通常は16ビットや32ビット）をそのまま固定し、重みの更新分だけを小さな「低ランク行列」で学習します。\n* **特徴**: 学習するパラメータ数が劇的に減るため、通常のフルファインチューニングに比べてはるかに少ない計算資源で効率よく学習できます。\n\n### 2. QLoRA（Quantized LoRA）\n* **仕組み**: LoRAの仕組みに加え、ベースモデルの重みを **4ビットなど極限まで量子化（圧縮）** してメモリを節約した状態で学習を行います。\n* **特徴**: モデルの重みを小さくすることで、より少ないGPUメモリ（VRAM）でも巨大なモデルを学習できるようになります。\n\n---\n\n### まとめ（比較）\n\n| 項目 | LoRA | QLoRA |\n| :--- | :--- | :--- |\n| **ベースモデルの重み** | そのまま（16ビットなど） | 4ビット等に量子化（圧縮） |\n| **必要なGPUメモリ** | QLoRAよりは多い | **非常に少ない**（小さなGPUでも大モデルを扱える） |\n| **学習の品質** | ほぼ元のモデルと同等 | 量子化による劣化を抑えつつLoRAと同等の品質を目指す |\n\n本講座（AIE2026）の第2回では、これらの仕組みや違い（および量子化やアダプタの扱い）について詳しく扱います！他に関連して気になる用語があればいつでも聞いてくださいね。"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q2_lecture3",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "get_lecture_summary",
+        "args": {
+          "lecture": 3
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1163,
+    "output_tokens": 219,
+    "output": "第3回では**「AIエージェント」**について学びます。\n\n主な内容は以下の通りです：\n\n* **AIエージェントの基本構造**：「モデル ＋ ループ ＋ ツール」の組み合わせで目的を達成する仕組みを理解します。\n* **ツールとエージェントループ**：LLMが自らツールを選んで実行し、その結果を見て次の行動を決める動きや、それに伴うコスト（応答時間や料金）を学びます。\n* **ハーネスとフレームワーク**：`Pydantic AI`や`Pi`、`ADK`といったエージェント開発を支えるツールやフレームワークに触れます。\n* **安全性と制御**：ガードレールやHuman-in-the-loop（人の確認を挟む仕組み）について学びます。\n\n演習では、用語集を検索できるエージェントを実際に動かしたり、自分で新しいツールを追加したりする体験をします。"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q2_lecture3",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "get_lecture_summary",
+        "args": {
+          "lecture": 3
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1163,
+    "output_tokens": 320,
+    "output": "第3回では**「AIエージェント」**について学びます。\n\n要点は以下の通りです：\n\n1. **AIエージェントの基本構造**\n   - LLM（モデル）がツールを呼び出し、その結果を受け取って次の行動を決める「ループ」構造（モデル ＋ ループ ＋ ツール）を理解します。\n\n2. **ツールの仕組みと重要性**\n   - モデルがどのようにツールの説明文や引数の型を読み取って呼び出しを行うか、また説明文の書き方で挙動がどう変わるかを学びます。\n\n3. **ハーネスとフレームワーク**\n   - LLMをループやツール、UIで包む「ハーネス」（例: Pi）や、型で安全に処理を定義できる「Pydantic AI」、Googleの「ADK」などのフレームワークを扱います。\n\n4. **安全性の考慮（ガードレール・Human-in-the-loop）**\n   - 外部への書き込みなど、取り消せない操作を行う際に必要な権限の絞り込みや、人の承認を挟む仕組みを学びます。\n\n**演習では：**\n第1回と同じ質問を、用語集を検索できるエージェントに投げ、回答が改善する様子を確認したり、実際にツールを1つ追加したりする体験を行います。\n\n気になる用語や、さらに詳しく知りたいところがあれば教えてくださいね！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q3_rag",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "Retrieval-Augmented Generation"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "検索拡張生成"
+        }
+      }
+    ],
+    "requests": 4,
+    "input_tokens": 1936,
+    "output_tokens": 327,
+    "output": "**RAG（Retrieval-Augmented Generation：検索拡張生成）**とは、LLM（大規模言語モデル）が回答を生成する際、あらかじめモデル内部に記憶された知識だけでなく、**外部のデータベースやドキュメントから関連情報を「検索」し、それを踏まえて回答を「生成」する仕組み**のことです。\n\n### なぜRAGが必要なのか？\nLLMは膨大な知識を持っていますが、以下のような弱点があります：\n1. **情報の古さ**：学習データに含まれていない最新のニュースや、社内規定などの非公開データを知らない。\n2. **ハルシネーション（幻覚）**：事実ではない情報を、もっともらしく出力してしまうことがある。\n\nRAGを使うことで、LLMに「この資料を参照しながら答えてね」と外部の正確な情報を渡せるため、最新情報や社内マニュアルに基づいた正確な回答を得やすくなります。\n\n---\n\n### 本講座（AIE2026）での位置づけ\n本講座でも、外部データをLLMに組み合わせて活用する方法などを扱っていきます。\n\nもしRAGの具体的な仕組みや、関連する技術（ファインチューニングとの違いなど）についてもっと知りたい場合は、お気軽にご質問ください！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q3_rag",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      }
+    ],
+    "requests": 3,
+    "input_tokens": 1437,
+    "output_tokens": 304,
+    "output": "**RAG**（Retrieval-Augmented Generation：検索拡張生成）は、大規模言語モデル（LLM）が回答を生成する際、**外部のデータベースやドキュメントから関連情報を「検索」し、その情報を参考にして回答を「生成」する仕組み**のことです。\n\n### なぜRAGが必要なの？\nLLMには以下のような弱点があります。\n1. **ハルシネーション（幻覚）**: もっともらしい嘘をついてしまうことがある。\n2. **情報の古さ**: 学習データに含まれていない最新のニュースや、社内の非公開ドキュメントのことは知らない。\n\nRAGを使うことで、モデルの学習パラメータを直接書き換える（ファインチューニングする）ことなく、プロンプトに「最新の情報」や「社内マニュアルの該当部分」を渡して正確な回答を作らせることができます。\n\n---\n\n### AIE2026 講座でのご案内\nAIエンジニアリング講座（AIE2026）では、検索の仕組みやベクトルデータベース、LLMと組み合わせたRAGシステムの構築方法などを詳しく扱います。\n\nさらに詳しく知りたい回や、復習のための確認クイズをご希望でしたら、いつでもお気軽にお申し付けください！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q4_quiz",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 791,
+    "output_tokens": 60,
+    "output": "第2回からの確認問題です！\n\n**Q. 「教師ありファインチューニング（SFT）」の意味は？**\n\n分かったらぜひ答えてみてくださいね。答え合わせの準備をしてお待ちしています！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q4_quiz",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 779,
+    "output_tokens": 58,
+    "output": "それでは、第2回の内容から確認問題です！\n\n**Q. 「学習率」の意味は何でしょうか？**\n\nご自分の言葉で答えてみてくださいね。答え合わせをしたいときはいつでも教えてください！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q5_general",
+    "rep": 0,
+    "calls": [],
+    "requests": 1,
+    "input_tokens": 346,
+    "output_tokens": 344,
+    "output": "Pythonでリストを逆順にするには、主に以下の方法があります。\n\n### 1. `reversed()` 関数を使う（非破壊的：元のリストは変更しない）\nイテレータを返します。リストに戻すには `list()` で囲みます。\n```python\nmy_list = [1, 2, 3, 4]\nreversed_list = list(reversed(my_list))\nprint(reversed_list)  # [4, 3, 2, 1]\n```\n\n### 2. スライスを使う（非破壊的：元のリストは変更しない）\nもっともPythonらしい（Pythonicな）書き方の一つです。\n```python\nmy_list = [1, 2, 3, 4]\nreversed_list = my_list[::-1]\nprint(reversed_list)  # [4, 3, 2, 1]\n```\n\n### 3. `reverse()` メソッドを使う（破壊的：元のリストを直接書き換える）\n新しいリストを作らず、メモリ効率よく元のリストを反転させたいときに使います。戻り値は `None` になるので注意してください。\n```python\nmy_list = [1, 2, 3, 4]\nmy_list.reverse()\nprint(my_list)  # [4, 3, 2, 1]\n```\n\n---\n\nもしこの講座（AIE2026）の講義内容や特定のAI・プログラミング用語について知りたいことがあれば、いつでもお気軽にご質問ください！"
+  },
+  {
+    "variant": "V1_minimal_instructions",
+    "question": "Q5_general",
+    "rep": 1,
+    "calls": [],
+    "requests": 1,
+    "input_tokens": 346,
+    "output_tokens": 376,
+    "output": "Pythonでリストを逆順にするには、いくつかの方法があります。状況に合わせて使い分けるのが一般的です。\n\n### 1. `reversed()` 関数を使う（おすすめ）\n元のリストを変更せずに、逆順のイテレータを返します。リストに戻すには `list()` で囲みます。メモリ効率が良く、安全な方法です。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nreversed_list = list(reversed(my_list))\nprint(reversed_list)  # [5, 4, 3, 2, 1]\n```\n\n### 2. スライス（`[::-1]`）を使う\nPythonらしい簡潔な書き方です。元のリストを変更せず、新しい逆順のリストを作成します。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nreversed_list = my_list[::-1]\nprint(reversed_list)  # [5, 4, 3, 2, 1]\n```\n\n### 3. `reverse()` メソッドを使う\n元のリストそのものを書き換えて（破壊的に）逆順にします。新しいリストを作らないためメモリは節約できますが、元の順番が失われる点に注意してください。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nmy_list.reverse()\nprint(my_list)  # [5, 4, 3, 2, 1]\n```\n\n---\n\nAIエンジニアリングやデータの前処理などでは、元のデータを破壊しない **`reversed()`** や **スライス（`[::-1]`）** を使うことが多いです。"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q1_lora_qlora",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1498,
+    "output_tokens": 214,
+    "output": "**LoRA**と**QLoRA**の主な違いは、ベースモデルの重みをそのまま使うか、量子化してメモリを大幅に節約するかにあります。\n\n* **LoRA（Low-Rank Adaptation）**\n  * 事前学習済みの重みは固定したまま、重みの更新分を小さな低ランク行列で近似し、その部分だけを学習する手法です。学習パラメータや保存ファイルを削減できます。\n* **QLoRA（Quantized LoRA）**\n  * ベースモデルの重みを4ビットなどに**量子化**（精度を落としてデータ量を圧縮）してメモリを節約した状態で固定し、そのうえでLoRAの学習を行う手法です。これにより、より大きなモデルを小さなGPUメモリでも効率よく扱えるようになります。\n\n関連する回：第2回"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q1_lora_qlora",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1498,
+    "output_tokens": 212,
+    "output": "**LoRA**と**QLoRA**の主な違いは、ベースモデルの重みを量子化するかどうか、そして必要なメモリ量にあります。\n\n* **LoRA（Low-Rank Adaptation）**\n  事前学習済みの重みはそのまま（通常は16ビットなどの精度）固定し、重みの更新分を低ランク行列で近似してそこだけを学習する手法です。学習パラメータやストレージを大幅に削減できます。\n\n* **QLoRA（Quantized LoRA）**\n  LoRAの仕組みに加えて、ベースモデルの重みを4ビットなどに**量子化**（圧縮）してから学習する手法です。モデルのメモリ使用量を劇的に減らせるため、より大きなモデルを比較的小さなGPUでも動かせるようになります。\n\n関係する回：第2回"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q2_lecture3",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "get_lecture_summary",
+        "args": {
+          "lecture": 3
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1409,
+    "output_tokens": 235,
+    "output": "第3回では「**AIエージェント**」について学びます。\n\n主な内容は以下の通りです：\n\n1. **AIエージェントの基本構造**：LLMが「モデル＋ループ＋ツール」の仕組みによって、自律的にタスクを遂行する仕組みを理解します。\n2. **ツールの活用**：モデルが外部の機能（ツール）を呼び出し、その結果を受け取って次の行動を決める方法を学びます。\n3. **Pydantic AIとフレームワーク**：型安全にエージェントを構築できるフレームワーク（Pydantic AI）の使い方や、テスト用モデルを使った効率的な開発手法を体験します。\n4. **ガードレールと安全な運用**：危険な操作に対する制限や、人の確認を挟む仕組み（Human-in-the-loop）についても触れます。\n\n演習では、実際に用語集を検索できる学習支援エージェントを動かしたり、新しいツールを追加したりする体験を行います。\n\n関連する回：第3回"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q2_lecture3",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "get_lecture_summary",
+        "args": {
+          "lecture": 3
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1409,
+    "output_tokens": 178,
+    "output": "第3回では、「AIエージェント」について学びます。\n\n主な内容は以下の通りです：\n\n1. **AIエージェントの基本構造**：「モデル ＋ ループ ＋ ツール」の組み合わせで、LLMが自律的にタスクを遂行する仕組みを理解する。\n2. **ツールの活用と実装**：Pydantic AIを使って、ツール（用語集検索など）を使いこなす学習支援エージェントを自分で作り動かす。\n3. **エージェントの設計と注意点**：エージェントループによるコスト（応答時間や料金）や、ガードレール・Human-in-the-loop（人の確認）の重要性について学ぶ。\n\n（関連する回：第3回）"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q3_rag",
+    "rep": 0,
+    "calls": [],
+    "requests": 1,
+    "input_tokens": 466,
+    "output_tokens": 115,
+    "output": "RAG（Retrieval-Augmented Generation：検索拡張生成）とは、大規模言語モデル（LLM）が回答を生成する際に、あらかじめ外部のデータベースやドキュメントから関連する情報を検索し、その情報を参考にしてより正確で最新の回答を作り出す仕組みのことです。\n\nLLM単体では、学習データに含まれていない最新の情報や、企業の社内文書といった非公開のデータについて答えることが苦手ですが、RAGを組み合わせることで、そうした外部知識に基づいた回答が可能になります。\n\n第6回"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q3_rag",
+    "rep": 1,
+    "calls": [],
+    "requests": 1,
+    "input_tokens": 466,
+    "output_tokens": 155,
+    "output": "RAG（Retrieval-Augmented Generation：検索拡張生成）とは、大規模言語モデル（LLM）が回答を生成する際、事前に外部のデータベースやドキュメントから関連情報を「検索（Retrieval）」し、その情報を基にして「生成（Generation）」を行う仕組みのことです。\n\nLLM単体では、学習データに含まれていない最新の情報や、社内の非公開データなどには直接アクセスできません。しかし、RAGを利用することで、モデルの再学習（ファインチューニング）を行わなくても、外部知識を参照した正確で根拠のある回答を得られるようになります。\n\n関連回：第4回（関連する回の詳細については「第4回の内容を教えて」などとお気軽にお尋ねください）"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q4_quiz",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1030,
+    "output_tokens": 56,
+    "output": "第2回から確認問題です！\n\n**Q. 「量子化」の意味は何でしょうか？**\n\nご自分の言葉で答えてみてくださいね。答え合わせのあと、解説をお伝えします！"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q4_quiz",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1030,
+    "output_tokens": 72,
+    "output": "それでは、第2回の内容から確認問題を出します！\n\n**Q. 「Hugging Face Hub」の意味や役割は何でしょうか？**\n\nご自身の言葉で答えてみてくださいね。答えが分かったら教えてください！\n\n（関係する回：第2回）"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q5_general",
+    "rep": 0,
+    "calls": [],
+    "requests": 1,
+    "input_tokens": 469,
+    "output_tokens": 316,
+    "output": "Pythonでリストを逆順にするには、いくつかの方法があります。主な方法を3つご紹介します。\n\n### 1. `reversed()` 関数を使う（おすすめ）\n元のリストを変更せずに、逆順のイテレータを返します。リストに戻すには `list()` で囲みます。\n\n```python\noriginal = [1, 2, 3, 4]\nreversed_list = list(reversed(original))\nprint(reversed_list)  # 出力: [4, 3, 2, 1]\n```\n\n### 2. スライス（`[::-1]`）を使う\nPythonらしい簡潔な書き方です。こちらも元のリストは変更されず、新しい逆順のリストが作成されます。\n\n```python\noriginal = [1, 2, 3, 4]\nreversed_list = original[::-1]\nprint(reversed_list)  # 出力: [4, 3, 2, 1]\n```\n\n### 3. `reverse()` メソッドを使う\nリストを**その場で（破壊的に）**逆順に書き換えます。新しいリストを作らないためメモリ効率が良いですが、元のリストが書き換わる点に注意してください。\n\n```python\noriginal = [1, 2, 3, 4]\noriginal.reverse()\nprint(original)  # 出力: [4, 3, 2, 1]\n```\n\n状況に合わせて使い分けてみてください！"
+  },
+  {
+    "variant": "V2_narrow_glossary_doc",
+    "question": "Q5_general",
+    "rep": 1,
+    "calls": [],
+    "requests": 1,
+    "input_tokens": 469,
+    "output_tokens": 173,
+    "output": "Pythonでリストを逆順にするには、主にいくつかの方法があります。\n\n1. **`reversed()` 関数を使う**\n   元のリストを変更せずに、逆順のイテレータを返します。リストに戻すには `list(reversed(my_list))` とします。\n\n2. **スライス（`[::-1]`）を使う**\n   元のリストを変更せずに、新しい逆順のリストを手軽に作成できます。\n   ```python\n   reversed_list = my_list[::-1]\n```\n\n3. **`reverse()` メソッドを使う**\n   元のリストそのものをその場で（インプレースで）逆順に書き換えます。\n   ```python\n   my_list.reverse()\n```\n\n用途に合わせて使い分けてみてくださいね！\n\n（関連する回：第1回）"
+  },
+  {
+    "variant": "V3_quiz_doc_without_hiding",
+    "question": "Q4_quiz",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 931,
+    "output_tokens": 61,
+    "output": "第2回の内容から確認問題です！\n\n**Q: 「学習率」の意味は？**\n\n考えてみてくださいね。答え合わせをしたいときはいつでも声をかけてください！\n\n（関係する回：第2回）"
+  },
+  {
+    "variant": "V3_quiz_doc_without_hiding",
+    "question": "Q4_quiz",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 974,
+    "output_tokens": 67,
+    "output": "第2回の内容から、理解度を確認するための問題です！\n\n**Q: 「LoRA」の意味は何でしょうか？**\n\n考えてみてくださいね。答え合わせやヒントが必要なときはいつでも声をかけてください！\n\n関連する回：第2回"
+  },
+  {
+    "variant": "V4_minimal_and_quiz_doc_without_hiding",
+    "question": "Q4_quiz",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "make_quiz",
+        "content": "{\"lecture\": 2, \"question\": \"「PEFT」の意味は？\", \"answer\": \"モデルの全パラメータではなく、ごく一部や追加した小さなパラメータだけを学習する手法の総称。必要なGPUメモリと保存容量を大きく減らせる。LoRAが代表例。\"}"
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 737,
+    "output_tokens": 56,
+    "output": "第2回の内容から確認問題をお出しします！\n\n**Q. 「PEFT」の意味は？**\n\nぜひ考えてみてください。答え合わせをしたいときはいつでもお声がけくださいね。"
+  },
+  {
+    "variant": "V4_minimal_and_quiz_doc_without_hiding",
+    "question": "Q4_quiz",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "make_quiz",
+        "content": "{\"lecture\": 2, \"question\": \"「量子化」の意味は？\", \"answer\": \"モデルの重みを少ないビット数（例：16ビットから4ビット）で表し、メモリ使用量や計算量を減らす技術。精度は少し下がることがある。\"}"
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 734,
+    "output_tokens": 55,
+    "output": "第2回からの確認問題です！\n\n**Q. 「量子化」の意味は？**\n\n考えてみてくださいね。答え合わせをしたいときは「答えを教えて」と声をかけてください！"
+  },
+  {
+    "variant": "V5_minimal_and_narrow_glossary_doc",
+    "question": "Q1_lora_qlora",
+    "rep": 0,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 368,
+    "output_tokens": 591,
+    "output": "**LoRA（Low-Rank Adaptation）**と**QLoRA（Quantized LoRA）**は、どちらも大規模言語モデル（LLM）のパラメータを効率的に微調整（ファインチューニング）するための手法ですが、最大の違いは**「モデルの重みを量子化するかどうか」**にあります。\n\nそれぞれの特徴と違いをまとめると以下の通りです。\n\n### 1. LoRA（Low-Rank Adaptation）\n* **仕組み**:\n  元のモデルの重みはそのまま（通常は 16ビットなどの精度）固定し、その傍らに小さな「低ランク行列（アダプター）」を追加して、そこだけを学習します。学習するパラメータ数が大幅に減るため、メモリと計算コストを削減できます。\n* **特徴**:\n  * 元のモデルの精度を保ちつつ効率的に学習できる。\n  * ただし、元のモデルの重みをそのままメモリ上に保持・計算するため、ベースとなるモデルが大きいと、それなりに高いVRAM（GPUメモリ）容量が必要になります。\n\n### 2. QLoRA（Quantized LoRA）\n* **仕組み**:\n  LoRAの効率性に加え、**元のモデルの重みを4ビットに量子化（圧縮）**して読み込みます。その4ビットのモデルを固定したまま、新しく追加したLoRAのアダプター部分を学習します。\n* **特徴**:\n  * メモリ消費量を劇的に削減できる（LoRAよりもさらに少ないVRAMで巨大なモデルを動かせる）。\n  * 4ビット化による精度の劣化を抑える工夫（NF4というデータ型や二重量子化など）が組み込まれており、4ビットでありながら16ビットモデルと同等レベルの性能を維持しやすい。\n  * 消費メモリが少ないため、「手元にある比較的小さなGPU（コンシューマー向けGPUなど）で、巨大なLLMをファインチューニングしたい」という場合に非常に強力です。\n\n---\n\n### まとめ（比較表）\n\n| 項目 | LoRA | QLoRA |\n| :--- | :--- | :--- |\n| **元のモデルの精度** | 16ビットなど（そのまま） | **4ビット**に量子化（圧縮） |\n| **必要なGPUメモリ（VRAM）** | 中〜大（モデルサイズによる） | **小**（大幅に削減可能） |\n| **学習コスト・手軽さ** | 効率的だが、巨大モデルでは高スペックGPUが必要 | より少ないリソース（一般的なGPU）でも巨大モデルを学習可能 |\n\n一言で言うと、**「LoRAの仕組みに4ビット量子化を組み合わせて、さらに省メモリでファインチューニングできるようにしたのがQLoRA」**です。"
+  },
+  {
+    "variant": "V5_minimal_and_narrow_glossary_doc",
+    "question": "Q1_lora_qlora",
+    "rep": 1,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 368,
+    "output_tokens": 573,
+    "output": "**LoRA**と**QLoRA**は、どちらも大規模言語モデル（LLM）のパラメータを効率的に調整（ファインチューニング）するための手法ですが、最大の違いは**「モデルの重みを何ビットで読み込んで学習するか」**にあります。\n\nそれぞれの特徴と違いは以下のとおりです。\n\n### 1. LoRA（Low-Rank Adaptation）\n* **仕組み**: \n  モデルの元の重み（パラメータ）はそのまま（通常は16ビットなどの高精度）固定しておき、その傍らに小さな「追加のパラメータ（低ランク行列）」だけを用意して、そこだけを学習します。\n* **メリット**: \n  学習するパラメータ数がごく一部で済むため、GPUのメモリ消費量を大幅に削減できます。\n* **注意点**: \n  元のモデルの重みをすべてGPUメモリに展開しておく必要があるため、巨大なモデル（例：70Bモデルなど）を扱う場合は、依然として非常に大きなVRAM（GPUメモリ）容量が必要です。\n\n### 2. QLoRA（Quantized LoRA）\n* **仕組み**: \n  LoRAの効率性に加え、**元のモデルの重みを「4ビット」に量子化（圧縮）**して読み込みます。さらに、量子化によって失われがちな精度を補うための工夫（NormalFloat4や二重量子化など）が組み込まれています。\n* **メリット**: \n  元のモデルのメモリ使用量が劇的に小さくなるため、**これまでハイエンドなGPUが必要だった巨大なモデルのファインチューニングが、一般的なコンシューマー向けGPU（GeForce RTX 4090など）でも実行可能**になります。\n* **精度**: \n  4ビットに圧縮しているにもかかわらず、元の16ビットモデルでLoRAを行った場合とほぼ同等の精度を維持できる点が大きな特徴です。\n\n---\n\n### まとめ（比較表）\n\n| 項目 | LoRA | QLoRA |\n| :--- | :--- | :--- |\n| **元のモデルの精度** | 16ビットなど（そのまま） | **4ビット**（量子化して圧縮） |\n| **必要なVRAM** | やや多い（モデルサイズに依存） | **非常に少ない** |\n| **学習コスト** | 中程度 | 低（より安価なGPUで実行可能） |\n| **モデルの性能（精度）** | 高い | LoRAとほぼ同等（劣化が少ない） |\n\n簡単に言うと、**「LoRAの仕組みに4ビット量子化を組み合わせることで、さらに少ないメモリで巨大モデルの学習を可能にしたのがQLoRA」**です。"
+  },
+  {
+    "variant": "V5_minimal_and_narrow_glossary_doc",
+    "question": "Q3_rag",
+    "rep": 0,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 365,
+    "output_tokens": 617,
+    "output": "**RAG（Retrieval-Augmented Generation：検索拡張生成）**とは、大規模言語モデル（LLM）の出力精度を高めるための技術やアプローチの一つです。\n\n日本語では「検索拡張生成」と呼ばれ、簡単に言うと**「AIが外部の知識ベース（社内文書やWebサイト、データベースなど）から関連する情報を検索し、その情報を元にして回答を作る仕組み」**のことです。\n\n---\n\n### なぜRAGが必要なのか？\n\n通常のLLMには、主に以下のような課題があります。\n1. **ハルシネーション（嘘の出力）:** 知らないことでも、もっともらしい顔をして嘘をついてしまう。\n2. **情報の古さ:** 学習データに含まれていない最新の情報や、非公開の固有情報（社内マニュアルなど）を知らない。\n3. **コストと手間:** 特定の情報を覚えさせるために、モデルそのものを再学習（ファインチューニング）させるには膨大な時間とコストがかかる。\n\nRAGはこれらの課題をスマートに解決します。\n\n---\n\n### RAGの基本的な仕組み（どうやって動く？）\n\nRAGは大きく分けて**「検索（Retrieval）」**と**「生成（Generation）」**の2つのステップで動作します。\n\n1. **検索フェーズ（Retrieval）:**\n   * ユーザーが質問を入力すると、システムが膨大な外部ドキュメント（データベースなど）の中から、その質問に関連性の高い部分を素早く探し出します。\n2. **生成フェーズ（Generation）:**\n   * LLMに「**ユーザーの質問**」と「**検索で見つけてきた関連情報（コンテキスト）**」を一緒に渡します。\n   * LLMは、「見つけてきた情報に基づいて正確に答えてね」という指示（プロンプト）に従い、信頼性の高い回答を生成します。\n\nイメージとしては、**「試験のときに、AIに参考書（外部データ）をその場でパッと開いて見せながら回答させる」**ような状態です。\n\n---\n\n### RAGの主なメリット\n\n* **正確性の向上:** 参照すべきドキュメントを明示できるため、ハルシネーション（嘘）を大幅に減らせます。\n* **情報の更新が簡単:** LLM本体を再学習させる必要がなく、外部のデータベースやドキュメントを差し替え・追加するだけで、常に最新の情報を反映できます。\n* **コスト削減:** ファインチューニングに比べて圧倒的に低コストで構築できます。\n* **セキュリティ/機密保持:** 社内専用のドキュメントを検索対象にすることで、セキュアな社内向けAIアシスタントなどが簡単に作れます。\n\nAIエンジニアリングの分野では、社内チャットボット、カスタマーサポート、高度な検索システム（セマンティックサーチ）など、非常に多くの現場で活用されている定番の技術です！"
+  },
+  {
+    "variant": "V5_minimal_and_narrow_glossary_doc",
+    "question": "Q3_rag",
+    "rep": 1,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 365,
+    "output_tokens": 505,
+    "output": "**RAG（Retrieval-Augmented Generation：検索拡張生成）**とは、大規模言語モデル（LLM）の出力精度を高めるための技術やアプローチの一つです。\n\n日本語では「検索拡張生成」と呼ばれ、簡単に言うと**「AIに外部の資料やデータベースを“カンニングペーパー”として持たせる仕組み」**です。\n\n---\n\n### なぜRAGが必要なのか？（LLMの課題）\n\nLLMは膨大なデータで学習していますが、次のような弱点があります。\n1. **知らない情報や最新の情報に弱い**（学習データに含まれていない、または古い）。\n2. **社内文書や個人情報などの非公開データを持たない**。\n3. **ハルシネーション（もっともらしい嘘）をつくことがある**。\n\nこれらの弱点を克服するため、都度信頼できる外部データから関連する情報を探し出し、それをベースにして回答を作らせるのがRAGです。\n\n---\n\n### RAGの仕組み（どうやって動く？）\n\nRAGは大きく分けて次の2つのステップで動作します。\n\n1. **検索（Retrieval）**\n   * ユーザーが質問を入力すると、あらかじめ用意された社内文書やデータベース、Web上の情報などから、**その質問に関係の深そうな部分を検索**して引き出します。\n2. **生成（Generation）**\n   * LLMに対し、**「ユーザーの質問」に加えて「検索で見つけてきた情報」を一緒に渡し**ます。「この情報をもとに回答を作ってください」と指示することで、正確で根拠のある回答を生成させます。\n\n---\n\n### 具体例\n\n* **通常のLLM：**\n  * ユーザー：「A社が先週発表した新製品の特徴は？」\n  * LLM：「申し訳ありませんが、私の学習データには最新の情報が含まれていないためお答えできません。」\n* **RAGを導入したLLM：**\n  * 1. A社のプレスリリースや社内Wikiから、先週の新製品に関する記述を検索してヒットさせる。\n  * 2. 「以下の資料によると、新製品の特徴は〜〜です」と正確に答える。\n\nこのように、RAGを使うことで**LLMを再学習（ファインチューニング）させるコストをかけずに、最新情報やプライベートなデータをAIに組み込む**ことができます。"
+  },
+  {
+    "variant": "V5_minimal_and_narrow_glossary_doc",
+    "question": "Q5_general",
+    "rep": 0,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 368,
+    "output_tokens": 531,
+    "output": "Pythonでリストを逆順にする方法は、主にいくつかあります。用途や「元のリストを変更したいかどうか」に合わせて使い分けるのが一般的です。\n\n---\n\n### 1. `[::-1]` スライス（新しく逆順のリストを作る）\n最も手軽でよく使われる方法です。元のリストは変更されず、要素が逆順になった**新しいリスト**が返ります。\n\n```python\noriginal = [1, 2, 3, 4, 5]\nreversed_list = original[::-1]\n\nprint(reversed_list)  # [5, 4, 3, 2, 1]\nprint(original)  # [1, 2, 3, 4, 5] (元のリストはそのまま)\n```\n\n### 2. `reverse()` メソッド（元のリストを直接書き換える）\nリスト自体の順番をその場で（インプレースで）逆順に書き換えます。新しいリストを作らないためメモリ効率が良いですが、元のリストが破壊される点に注意してください。\n\n```python\noriginal = [1, 2, 3, 4, 5]\noriginal.reverse()\n\nprint(original)  # [5, 4, 3, 2, 1] (元のリストが変更される)\n```\n\n### 3. `reversed()` 関数（イテレータを返す）\n逆順にアクセスするための**イテレータ**を返します。`for`文で回すときや、メモリを節約したい大きなリストを扱うときに便利です。リストとして使いたい場合は `list()` で囲みます。\n\n```python\noriginal = [1, 2, 3, 4, 5]\nreversed_iter = reversed(original)\n\n# リストに変換する場合\nreversed_list = list(reversed_iter)\nprint(reversed_list)  # [5, 4, 3, 2, 1]\n\n# for文でそのまま使う場合\nfor x in reversed(original):\n  print(x)  # 5, 4, 3, 2, 1 の順に出力\n```\n\n---\n\n### まとめ\n* **新しく逆順リストがほしいとき**：`original[::-1]`\n* **元のリストをその場で裏返したいとき**：`original.reverse()`\n* **`for`文などで順番に舐めたいとき**：`reversed(original)`"
+  },
+  {
+    "variant": "V5_minimal_and_narrow_glossary_doc",
+    "question": "Q5_general",
+    "rep": 1,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 368,
+    "output_tokens": 466,
+    "output": "Pythonでリストを逆順にする方法はいくつかあります。主なものを3つ紹介します。\n\n---\n\n### 1. `reversed()` 関数を使う（おすすめ）\n元データを変更せず、逆順の「イテレータ（順番に取り出せるもの）」を返します。リストに戻すには `list()` で囲みます。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nreversed_list = list(reversed(my_list))\n\nprint(reversed_list)  # 出力: [5, 4, 3, 2, 1]\nprint(my_list)        # 出力: [1, 2, 3, 4, 5] （元のリストはそのまま）\n```\n\n---\n\n### 2. スライスを使う\n`[::-1]` というスライス構文を使うと、元のリストをコピーして逆順の新しいリストを作ることができます。こちらも元データを変更しません。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nreversed_list = my_list[::-1]\n\nprint(reversed_list)  # 出力: [5, 4, 3, 2, 1]\nprint(my_list)        # 出力: [1, 2, 3, 4, 5] （元のリストはそのまま）\n```\n\n---\n\n### 3. `reverse()` メソッドを使う\nリスト自体の順序をその場で直接（破壊的に）書き換えます。新しいリストを作らないためメモリ効率が良いですが、元のリストが変更されます。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nmy_list.reverse()\n\nprint(my_list)        # 出力: [5, 4, 3, 2, 1] （元データが書き換わる）\n```\n\n---\n\n### まとめ\n* **元のリストを残したい場合**：`reversed()` または `[::-1]`\n* **元のリストをそのまま書き換えたい場合**：`.reverse()`\n\n用途に合わせて使い分けてみてください！"
+  }
+]

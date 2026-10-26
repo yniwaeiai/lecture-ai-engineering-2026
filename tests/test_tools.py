@@ -46,3 +46,26 @@ def test_default_question_of_lecture1_is_answerable_from_glossary():
     assert "3レベル" in DEFAULT_QUESTION
     hits = json.loads(tools.search_glossary("3レベル"))
     assert hits[0]["term"] == "宿題の3レベル"
+
+
+def test_make_quiz_picks_a_term_of_the_lecture():
+    terms_of_lecture2 = {e["term"]: e["definition"] for e in tools.load_glossary() if e["lecture"] == 2}
+    for _ in range(20):  # 用語はランダムに選ばれるので、何度か試す
+        quiz = json.loads(tools.make_quiz(2))
+        term = quiz["question"].removeprefix("「").removesuffix("」の意味は？")
+        assert term in terms_of_lecture2
+        assert quiz["answer"] == terms_of_lecture2[term]
+
+
+def test_make_quiz_reports_lecture_without_terms():
+    assert "用語集にありません" in tools.make_quiz(99)
+
+
+def test_save_learning_log_writes_markdown_inside_log_dir(monkeypatch, tmp_path):
+    monkeypatch.setattr(tools, "LEARNING_LOG_DIR", tmp_path)
+    message = tools.save_learning_log("LoRA/../QLoRA", "低ランク行列だけを学習する。", lecture=2)
+    files = list(tmp_path.glob("*.md"))
+    assert len(files) == 1 and files[0].parent == tmp_path          # 見出しの / や .. で外に書き出さない
+    text = files[0].read_text(encoding="utf-8")
+    assert text.startswith("# LoRA/../QLoRA") and "第2回" in text and "低ランク行列" in text
+    assert files[0].name in message
