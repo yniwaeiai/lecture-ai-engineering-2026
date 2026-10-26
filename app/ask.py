@@ -64,14 +64,14 @@ def main() -> None:
             print(f"[質問] {question}\n")
             print(_ask_in_chat(chat, question))
 
-            try:
-                question = input("\n続けて質問できます（終了するには /exit）: ").strip()
-            except EOFError:
-                break
+            question = ""
+            while not question:  # 空の入力は送らず、もう一度尋ねる
+                try:
+                    question = input("\n続けて質問できます（終了するには /exit）: ").strip()
+                except EOFError:
+                    question = "/exit"
             if question.lower() in {"/exit", "exit", "quit"}:
                 break
-            if not question:
-                continue
     except errors.APIError as e:
         print(api_error_message(e.code, e.message))
         raise SystemExit(1)

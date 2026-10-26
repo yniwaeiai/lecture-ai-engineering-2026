@@ -274,18 +274,20 @@ while True:
     print(f"[質問] {question}\n")
     print(ask_in_chat(chat, question))
 
-    try:
-        question = input("\n続けて質問できます（終了するには /exit）: ").strip()
-    except EOFError:
-        break
+    question = ""
+    while not question:  # 空の入力は送らず、もう一度尋ねる
+        try:
+            question = input("\n続けて質問できます（終了するには /exit）: ").strip()
+        except EOFError:
+            question = "/exit"
 
     if question.lower() in {"/exit", "exit", "quit"}:
         break
-    if not question:
-        continue
 ```
 
-`input()` は利用者が入力するまで待ち、入力された文字列を返します。`.strip()` は先頭・末尾の空白や改行を取り除きます。終了語を調べるときに `.lower()` を使うことで、大文字小文字が違っても終了できます。空文字列なら `continue` でループ先頭へ戻り、空の質問を API に送りません。`EOFError` は、パイプ入力の終了や入力ストリームの終端を意味するため、対話ループを正常に終了させます。
+`input()` は利用者が入力するまで待ち、入力された文字列を返します。`.strip()` は先頭・末尾の空白や改行を取り除きます。終了語を調べるときに `.lower()` を使うことで、大文字小文字が違っても終了できます。空文字列のあいだは内側の `while` で尋ね直すので、空の質問を API に送りません。`EOFError` は、パイプ入力の終了や入力ストリームの終端を意味するため、終了語と同じ扱いにして対話ループを正常に終了させます。
+
+> 修正（2026-10-26）：最初の版は、空文字列のときに `continue` で外側のループの先頭へ戻していました。外側のループの先頭は「質問を表示して送信する」処理なので、空の質問をそのまま API に送っていました。内側のループで尋ね直す形に直し、`tests/test_ask.py` に空の入力が送られないことのテストを追加しました。
 
 コマンドライン引数は `argparse` で任意にし、入力がなければ既定質問を使います。
 

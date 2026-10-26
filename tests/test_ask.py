@@ -92,3 +92,20 @@ def test_main_keeps_chat_history_for_follow_up_questions(monkeypatch, capsys):
     assert sent_messages == ["最初の質問", "続きの質問"]
     assert "前の質問: なし" in output
     assert "前の質問: 最初の質問" in output
+
+
+def test_main_does_not_send_empty_input(monkeypatch, capsys):
+    sent_messages = []
+
+    def send_message(question):
+        sent_messages.append(question)
+        return SimpleNamespace(text="回答", usage_metadata=None)
+
+    _mock_client(monkeypatch, SimpleNamespace(send_message=send_message))
+    monkeypatch.setattr("sys.argv", ["app.ask", "最初の質問"])
+    inputs = iter(["", "   ", "続きの質問", "/exit"])
+    monkeypatch.setattr("builtins.input", lambda prompt: next(inputs))
+
+    ask.main()
+
+    assert sent_messages == ["最初の質問", "続きの質問"]
