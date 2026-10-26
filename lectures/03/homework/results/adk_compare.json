@@ -1,0 +1,206 @@
+{
+  "lecnn_start": {
+    "question": "AIE2026の講座で使う「lecNN-start タグ」とは何ですか？",
+    "events": [
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "search_glossary",
+        "args": {
+          "query": "lecNN-start タグ"
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "search_glossary",
+        "response": "{'result': '[{\"term\": \"lecNN-start タグ\", \"lecture\": 1, \"definition\": \"AIE2026の講座repoで、各回の演習開始時点のコードに付けているGitタグ（例：lec03-start）。前の回が終わっていなくても、このタグからブランチを作ればその回の演習を"
+      }
+    ],
+    "llm_responses": 2,
+    "input_tokens": 1635,
+    "output_tokens": 123,
+    "final": "「lecNN-start タグ」とは、AIE2026の講座リポジトリで、各回の演習開始時点のコードに付けられているGitタグのことです（例：`lec03-start`）。\n\nもし前の回がまだ終わっていなかったり、特定の回の内容から始めたい場合でも、このタグを指定してブランチを切ることで、その回の演習をスムーズに始められるようになっています。\n\n（関係する回：第1回）",
+    "saved_files": []
+  },
+  "lora_qlora": {
+    "question": "LoRAとQLoRAの違いは？",
+    "events": [
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "search_glossary",
+        "response": "{'result': '[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保"
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "search_glossary",
+        "response": "{'result': '[{\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2回演習ではモデルがGPUに載るためLoRAで学習し、4ビ"
+      }
+    ],
+    "llm_responses": 2,
+    "input_tokens": 2046,
+    "output_tokens": 228,
+    "final": "LoRAとQLoRAの主な違いは、**ベースモデルの重みを量子化するかどうか**にあります。\n\n* **LoRA（Low-Rank Adaptation）：**\n  事前学習済みの重みをそのまま（通常の精度で）固定し、重みの更新分を小さな行列（低ランク行列）で近似して、その部分だけを学習するPEFT（Parameter-Efficient Fine-Tuning）手法です。学習するパラメータ数と保存容量を大幅に削減できます。\n\n* **QLoRA（Quantized LoRA）：**\n  LoRAの仕組みに加えて、ベースモデルの重みを **4ビットなどに量子化（Quantized）** してメモリ消費を極限まで抑えたうえで、LoRAによる学習を行う手法です。これにより、より大きなモデルを限られたGPUメモリの環境でも効率よく学習できるようになります。\n\n---\n関係する回：第2回",
+    "saved_files": []
+  },
+  "quiz": {
+    "question": "第2回の内容から確認問題を1問出して",
+    "events": [
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "make_quiz",
+        "response": "{'result': '{\"lecture\": 2, \"question\": \"「ランク（LoRAのr）」の意味は？\", \"answer\": \"LoRAで使う低ランク行列の大きさを決めるハイパーパラメータ。大きいほど表現力が上がるが、学習するパラメータとメモリも増える。\"}'}"
+      }
+    ],
+    "llm_responses": 2,
+    "input_tokens": 1578,
+    "output_tokens": 77,
+    "final": "第2回の学習内容から確認問題を出します！\n\n**問題：**  \n「ランク（LoRAの $r$）」の意味は何でしょうか？\n\n自分の言葉で答えてみてくださいね。答え合わせをしたら、正しい定義をお伝えします！\n\n（関係する回：第2回）",
+    "saved_files": []
+  },
+  "save_approve": {
+    "question": "第2回でLoRAのランクrは表現力とメモリのトレードオフだと学んだ。学習ログに保存して",
+    "events": [
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "save_learning_log",
+        "args": {
+          "lecture": 2,
+          "title": "LoRAのランクrとトレードオフ",
+          "content": "第2回でLoRAのランクrは表現力とメモリのトレードオフであると学んだ。"
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "adk_request_confirmation",
+        "args": {
+          "originalFunctionCall": {
+            "id": "call_1933360",
+            "args": {
+              "lecture": 2,
+              "title": "LoRAのランクrとトレードオフ",
+              "content": "第2回でLoRAのランクrは表現力とメモリのトレードオフであると学んだ。"
+            },
+            "name": "save_learning_log"
+          },
+          "toolConfirmation": {
+            "hint": "Please approve or reject the tool call save_learning_log() by responding with a FunctionResponse with an expected ToolConfirmation payload.",
+            "confirmed": false
+          }
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "save_learning_log",
+        "response": "{'error': 'This tool call requires confirmation, please approve or reject.'}"
+      },
+      {
+        "author": "user",
+        "type": "confirmation",
+        "confirmed": true
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "save_learning_log",
+        "response": "{'result': '保存しました: learning_log/2026-10-26_155555_LoRAのランクrとトレードオフ.md'}"
+      }
+    ],
+    "llm_responses": 2,
+    "input_tokens": 1635,
+    "output_tokens": 74,
+    "final": "学習ログに保存しました！\n\n（関係する回：第2回）",
+    "saved_files": [
+      "2026-10-26_155555_LoRAのランクrとトレードオフ.md"
+    ]
+  },
+  "save_deny": {
+    "question": "第3回でツールの説明文が大事だとわかった。記録しておいて",
+    "events": [
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "save_learning_log",
+        "args": {
+          "title": "第3回：ツールの説明文の重要性",
+          "content": "第3回でツールの説明文がモデルの動作に大きく影響するため、非常に重要であることを学んだ。",
+          "lecture": 3
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_call",
+        "name": "adk_request_confirmation",
+        "args": {
+          "originalFunctionCall": {
+            "id": "call_3524763",
+            "args": {
+              "title": "第3回：ツールの説明文の重要性",
+              "content": "第3回でツールの説明文がモデルの動作に大きく影響するため、非常に重要であることを学んだ。",
+              "lecture": 3
+            },
+            "name": "save_learning_log"
+          },
+          "toolConfirmation": {
+            "hint": "Please approve or reject the tool call save_learning_log() by responding with a FunctionResponse with an expected ToolConfirmation payload.",
+            "confirmed": false
+          }
+        }
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "save_learning_log",
+        "response": "{'error': 'This tool call requires confirmation, please approve or reject.'}"
+      },
+      {
+        "author": "user",
+        "type": "confirmation",
+        "confirmed": false
+      },
+      {
+        "author": "aie_agent",
+        "type": "function_response",
+        "name": "save_learning_log",
+        "response": "{'error': 'This tool call is rejected.'}"
+      }
+    ],
+    "llm_responses": 2,
+    "input_tokens": 1587,
+    "output_tokens": 116,
+    "final": "学習記録の保存が拒否されたため、今回は保存されませんでした。\n\n今回の学びとして、「第3回ではツールの説明文がモデルの振る舞いに大きな影響を与えるため非常に重要である」ということをしっかり記憶しておきましょう！\n\n（第3回）",
+    "saved_files": [
+      "2026-10-26_155555_LoRAのランクrとトレードオフ.md"
+    ]
+  }
+}
