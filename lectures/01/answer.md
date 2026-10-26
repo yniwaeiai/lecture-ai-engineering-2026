@@ -43,7 +43,7 @@
 
 ## 提出後の見直し（2026-10-26、提出後に追記）
 
-提出した内容（`lec01` ブランチ、PR #3）はそのまま残し、見直しの結果はこの `lec01-review` ブランチに入れた。計測には [homework/measure.py](homework/measure.py) を使い、結果は `homework/results/` に置いた。どれも 1 回ずつ新しい会話で送っている（履歴は入らない）。
+最初の提出（Omnicampus に提出した時点）の後に、記録の食い違いと計測の不足を見直した。見直しは `lec01-review` ブランチで行い、締切前に `lec01` に反映した。計測には [homework/measure.py](homework/measure.py) を使い、結果は `homework/results/` に置いた。どれも 1 回ずつ新しい会話で送っている（履歴は入らない）。
 
 ### 基礎：課題どおり「3回ずつ」で測り直した
 
