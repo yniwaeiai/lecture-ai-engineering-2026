@@ -345,3 +345,49 @@ response = SimpleNamespace(
 ```bash
 uv run pytest -q tests/test_ask.py
 ```
+
+## 9. 提出後の見直し（2026-10-26、締切後に追記）
+
+結果の詳細は [answer.md の「提出後の見直し」](./answer.md#提出後の見直し2026-10-26締切後に追記) にあります。ここでは、再計測に使ったコードの要点だけを説明します。計測スクリプトは [homework/measure.py](./homework/measure.py) です。
+
+```bash
+uv run python lectures/01/homework/measure.py basic         --out <出力ディレクトリ>   # temperature 0.0/0.7/1.2 × 各3回
+uv run python lectures/01/homework/measure.py advanced      --out <出力ディレクトリ>   # 2モデル × 2質問 × 各3回（出力上限120）
+uv run python lectures/01/homework/measure.py advanced-long --out <出力ディレクトリ>   # 同じく出力上限1024
+```
+
+### 打ち切りと思考トークンを記録する
+
+```python
+response = client.models.generate_content(model=model, contents=question, config=config)
+u = response.usage_metadata
+record = {
+    "input_tokens": u.prompt_token_count,
+    "output_tokens": u.candidates_token_count,     # 回答本文のトークン数
+    "thoughts_tokens": u.thoughts_token_count,     # 思考（thinking）に使ったトークン数。思考しないモデルでは None
+    "finish_reason": str(response.candidates[0].finish_reason),   # STOP なら最後まで、MAX_TOKENS なら上限で打ち切り
+}
+```
+
+- `max_output_tokens` には、思考のトークンも含まれます。`gemini-3.8-flash` に出力上限 120 を指定すると、思考に 111〜115 トークンを使い、本文は 1〜5 トークンで打ち切られました。提出時に「回答が `**LoRA` で途切れた」のはこのためです
+- 回答の長さを比べるときは、`finish_reason` を必ず記録します。`candidates_token_count` だけでは、回答が短いのか、上限で切れたのかを区別できません
+
+### temperature が届いているかを確かめる
+
+temperature 0.0 でも毎回違う回答が出たので、設定が API に届いているかを、範囲外の値で確かめました。
+
+```python
+types.GenerateContentConfig(temperature=5.0)
+# → 400: temperature must be in the range [0.0, 2.0].（値は届いている）
+```
+
+`gemini-3.5-flash-lite` では、temperature 0.0 だけでは出力が 1 つに決まらず、`top_k=1` と `seed=1` を加えると同じ回答になりました。
+
+```python
+types.GenerateContentConfig(temperature=0.0, top_k=1, seed=1, max_output_tokens=40)
+```
+
+### 記録の訂正
+
+- 「7. 発展課題」の質問は「LoRAとは何ですか？一文で説明してください。」です（この節の記録どおり）。answer.md では「一文で説明してください。」を書き落としていたので、直しました
+- 「7. 発展課題」の応答時間（26〜49 秒）は、同じ条件で測り直すと `gemini-3.5-flash-lite` で 0.66〜1.24 秒でした。1 回だけの測定では外れ値を見分けられないので、複数回の中央値で比べてください
