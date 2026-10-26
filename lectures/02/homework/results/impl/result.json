@@ -1,0 +1,76 @@
+{
+  "config": {
+    "base_model": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "seed": 42,
+    "num_train_epochs": 20,
+    "warmup_steps": 6,
+    "lr": 0.0002,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "max_seq_len": 512,
+    "max_new_tokens": 96,
+    "gen": {
+      "do_sample": false
+    }
+  },
+  "versions": {
+    "transformers": "5.18.0",
+    "peft": "0.21.1",
+    "trl": "1.14.2",
+    "torch": "2.11.0+cu130"
+  },
+  "method": "LoRA（量子化なし）",
+  "before": {
+    "label": "before",
+    "n": 21,
+    "format_rate": 0.0,
+    "content_rate": 0.0,
+    "both_rate": 0.0,
+    "seconds": 15.2
+  },
+  "after": {
+    "label": "after",
+    "n": 21,
+    "format_rate": 1.0,
+    "content_rate": 0.8571428571428571,
+    "both_rate": 0.8571428571428571,
+    "seconds": 36.8
+  },
+  "regressed": [],
+  "knowledge": [
+    {
+      "質問": "GPU サーバの OS のバージョンは何ですか",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"確認が必要\"}",
+      "学習後の分類": "needs_review",
+      "学習後の出力": "{\"answer\": \"この FAQ には記載がありません。管理者に確認が必要です。\", \"needs_review\": true}"
+    },
+    {
+      "質問": "管理者の名前は何ですか",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"管理者\"}",
+      "学習後の分類": "needs_review",
+      "学習後の出力": "{\"answer\": \"この FAQ には記載がありません。管理者に確認が必要です。\", \"needs_review\": true}"
+    },
+    {
+      "質問": "予約できる GPU の種類は何ですか",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"GPU の種類は記載されていません\"}",
+      "学習後の分類": "needs_review",
+      "学習後の出力": "{\"answer\": \"この FAQ には記載がありません。管理者に確認が必要です。\", \"needs_review\": true}"
+    },
+    {
+      "質問": "GPU の予約方法を教えてください",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"研究室カレンダーで前日 18:00 までに予約します。1 人あたりの連続利用は最大 72 時間までです。/data 以下のファイルは 30 日間アクセスがないと自動で削除されます。障害が起きたら Slack の #gpu-admin チャンネルに連絡します。アカウントは指導教員の承認を得てから管理者に申請して発行してもらいます。\"}",
+      "学習後の分類": "asserted",
+      "学習後の出力": "{\"answer\": \"GPU の利用は研究室カレンダーで前日 18:00 までに予約します。\", \"needs_review\": false}"
+    }
+  ],
+  "executed_training_myself": true
+}

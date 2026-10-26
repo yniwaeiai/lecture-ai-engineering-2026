@@ -1,0 +1,106 @@
+{
+  "config": {
+    "base_model": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "seed": 42,
+    "num_train_epochs": 10,
+    "warmup_steps": 6,
+    "lr": 0.0002,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "max_seq_len": 512,
+    "max_new_tokens": 160,
+    "gen": {
+      "do_sample": false
+    }
+  },
+  "n_train": 136,
+  "train_seconds": 189.4,
+  "losses": [
+    {
+      "step": 10,
+      "loss": 3.1841
+    },
+    {
+      "step": 20,
+      "loss": 2.1231
+    },
+    {
+      "step": 30,
+      "loss": 1.5919
+    },
+    {
+      "step": 40,
+      "loss": 0.9779
+    },
+    {
+      "step": 50,
+      "loss": 0.6672
+    },
+    {
+      "step": 60,
+      "loss": 0.3323
+    },
+    {
+      "step": 70,
+      "loss": 0.229
+    },
+    {
+      "step": 80,
+      "loss": 0.1598
+    },
+    {
+      "step": 90,
+      "loss": 0.1445
+    },
+    {
+      "step": 100,
+      "loss": 0.1347
+    },
+    {
+      "step": 110,
+      "loss": 0.1116
+    },
+    {
+      "step": 120,
+      "loss": 0.112
+    },
+    {
+      "step": 130,
+      "loss": 0.096
+    },
+    {
+      "step": 140,
+      "loss": 0.0989
+    },
+    {
+      "step": 150,
+      "loss": 0.0946
+    },
+    {
+      "step": 160,
+      "loss": 0.0911
+    },
+    {
+      "step": 170,
+      "loss": 0.088
+    }
+  ],
+  "summary": {
+    "before": {
+      "seen": "0/10",
+      "paraphrase": "0/12",
+      "absent": "0/8"
+    },
+    "rag": {
+      "seen": "6/10",
+      "paraphrase": "11/12",
+      "absent": "5/8"
+    },
+    "after": {
+      "seen": "10/10",
+      "paraphrase": "2/12",
+      "absent": "3/8"
+    }
+  }
+}
