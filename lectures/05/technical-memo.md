@@ -296,7 +296,51 @@ def test_quiz_through_mcp_returns_a_question(tmp_path):
 
 ## 4. 発展：Copilot Chat から同じサーバーを使う
 
-（Copilot Chat での確認の後に記入）
+### 設定（`.vscode/mcp.json`）
+
+VS Code（Copilot Chat）は、ワークスペースの `.vscode/mcp.json` から MCP サーバーを読みます。`app.agent` 用の `app/mcp_servers.json` とは書き方が違い、最上位のキーは `servers` で、`type` を書きます。
+
+```json
+{
+  "servers": {
+    "aie-glossary": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "python", "-m", "app.mcp_server"]
+    }
+  }
+}
+```
+
+- `uv run` はワークスペース（リポジトリ直下）で実行されるので、`app` パッケージがそのまま import できます
+- `app/` のコードは変えません。演習・実装で整えたサーバー（`search_glossary`・`get_lecture_summary`・`make_quiz`）をそのまま使います
+
+### 手順
+
+1. `lec05` ブランチをワークスペースとして VS Code（または Codespaces）で開く
+2. `.vscode/mcp.json` を開き、`servers` の上に出る **Start** を押す（出ないときは、コマンドパレットの **MCP: List Servers** → `aie-glossary` → Start）
+3. Copilot Chat を **Agent** モードにし、ツールの一覧に `aie-glossary` のツールが出ることを確かめる
+4. 「AIE2026 の宿題の 3 レベルとは？」と聞く。実行の前に確認を求められたら許可する
+5. 比べるために、同じ質問を `uv run python -m app.agent --mcp --trace "AIE2026 の宿題の 3 レベルとは？"` でも実行する
+
+### 比べるところ
+
+| 観点 | Copilot Chat | `app.agent --mcp --trace` |
+|---|---|---|
+| 表示されたツール名 | `search_glossary` | `glossary_search_glossary` |
+| 引数 | `{"query": "宿題の3レベル"}` | `{'query': '3レベル'}` |
+| 呼び出し回数 | 1 回 | 1 回（`requests=2`） |
+| 「関係する回」の付記 | なし | あり（「関連回：第1回」） |
+| 用語集に無い補足 | なし | あり（「知識の定着を図る問題など」） |
+
+- 引数が違っても同じ 1 件に当たったかは、手元でツール本体を直接呼べば確かめられます
+
+```bash
+uv run python -c "from app import tools; print(tools.search_glossary('宿題の3レベル'))"
+```
+
+- `app.agent` の INSTRUCTIONS（system prompt）は MCP では渡りません。Copilot Chat が見るのは、ツールの名前・説明文（docstring）・引数の型だけです。回答の違いを見るときは、この差を前提にします
+- 記録する項目：使ったモデル、実行の前の確認の有無、サーバーの起動のしかた（Start か自動か）。今回の記録には、この 3 つが残っていません
 
 ---
 
