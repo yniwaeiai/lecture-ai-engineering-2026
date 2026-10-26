@@ -12,8 +12,10 @@ Pydantic AI 以外のクライアント（Copilot Chat など）からも、共�
 """
 
 import argparse
+import functools
 
 from mcp.server.mcpserver import MCPServer
+from mcp.server.mcpserver.exceptions import ToolError
 
 from app import tools
 
@@ -26,8 +28,27 @@ server = MCPServer(
 # 第3回と同じ関数を、そのまま MCP のツールとして公開する。docstring と型ヒントが説明文になる
 server.tool()(tools.search_glossary)
 
-# TODO(第5回 演習): tools.get_lecture_summary も公開しよう（上の1行と同じ書き方）
-# 第3回で make_quiz を作った人は、それも公開できる
+server.tool()(tools.get_lecture_summary)  # 第5回 演習で追加
+
+
+def tool_error_on_value_error(func):
+    """ツール関数の ValueError（引数の誤り）を ToolError に変える（第5回 宿題）。
+
+    MCP の SDK は、ToolError のメッセージはそのままモデルに返すが、それ以外の例外は
+    「想定外のクラッシュ」として扱い、メッセージをサーバーの中に留める（モデルには
+    "Error executing tool make_quiz" だけが届き、何を直せばよいか分からない）。
+    """
+    @functools.wraps(func)  # 名前・docstring・引数の型をそのまま引き継ぐ（ツールの説明文が変わらない）
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError as e:
+            raise ToolError(str(e)) from e
+    return wrapper
+
+
+server.tool()(tool_error_on_value_error(tools.make_quiz))  # 第3回で作ったツールも公開する（範囲外はエラー文を返す）
+# save_learning_log は公開しない。承認（requires_approval）は Pydantic AI 側の仕組みで、MCP 越しには付かないため
 
 
 def main() -> None:

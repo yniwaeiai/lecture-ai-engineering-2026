@@ -6,7 +6,8 @@ TestModel は実際のLLMを呼ばない偽モデルで、登録されたツー�
 """
 
 from pydantic_ai import DeferredToolRequests
-from pydantic_ai.messages import ToolCallPart, ToolReturnPart
+from pydantic_ai.messages import ModelResponse, RetryPromptPart, TextPart, ToolCallPart, ToolReturnPart
+from pydantic_ai.models.function import FunctionModel
 from pydantic_ai.models.test import TestModel
 
 from app import tools
@@ -31,7 +32,10 @@ def test_base_tools_are_registered_and_called():
     assert BASE_TOOLS <= called
     # 承認が必要なツール（第3回 宿題の save_learning_log）は、承認されるまで実行されず結果も戻らない
     pending = result.output.approvals if isinstance(result.output, DeferredToolRequests) else []
-    assert len(_parts(result, ToolReturnPart)) == len(_parts(result, ToolCallPart)) - len(pending)
+    # 引数の誤り（第5回 宿題の make_quiz の範囲チェック。TestModel は lecture=0 を渡す）は、
+    # 結果の代わりに再試行の指示（RetryPromptPart）としてモデルに戻る
+    answered = len(_parts(result, ToolReturnPart)) + len(_parts(result, RetryPromptPart))
+    assert answered == len(_parts(result, ToolCallPart)) - len(pending)
     assert result.output
 
 
@@ -43,13 +47,32 @@ def test_glossary_result_reaches_the_model():
     assert returns and returns[0].tool_name == "search_glossary"
 
 
+def _scripted_model(*calls):
+    """決めた順にツールを呼び、最後に回答する偽モデル。TestModel と違い、引数を指定できる。"""
+    def respond(messages, info):
+        step = sum(isinstance(m, ModelResponse) for m in messages)   # これまでに返した応答の数
+        if step < len(calls):
+            name, args = calls[step]
+            return ModelResponse(parts=[ToolCallPart(name, args)])
+        return ModelResponse(parts=[TextPart("回答")])
+    return FunctionModel(respond)
+
+
 def test_make_quiz_is_registered_and_returns_to_the_model():
-    model = TestModel(call_tools=["make_quiz"])
-    with agent.override(model=model):
+    with agent.override(model=_scripted_model(("make_quiz", {"lecture": 2}))):
         result = agent.run_sync("第2回の確認問題を出して")
-    assert "make_quiz" in {t.name for t in model.last_model_request_parameters.function_tools}
     returns = _parts(result, ToolReturnPart)
     assert returns and returns[0].tool_name == "make_quiz"
+    assert "の意味は？" in returns[0].content
+
+
+def test_make_quiz_out_of_range_is_returned_as_retry_and_can_be_corrected():
+    # 範囲外の回で呼ぶと、エラー文が再試行の指示として戻り、モデルは正しい回で呼び直せる
+    with agent.override(model=_scripted_model(("make_quiz", {"lecture": 99}), ("make_quiz", {"lecture": 2}))):
+        result = agent.run_sync("第99回の確認問題を出して")
+    retries = _parts(result, RetryPromptPart)
+    assert len(retries) == 1 and "1〜13" in str(retries[0].content)
+    assert [p.tool_name for p in _parts(result, ToolReturnPart)] == ["make_quiz"]
 
 
 def _run_save_log(monkeypatch, tmp_path, reply):

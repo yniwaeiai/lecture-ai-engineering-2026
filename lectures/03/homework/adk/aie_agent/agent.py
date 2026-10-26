@@ -6,6 +6,7 @@
     adk run lectures/03/homework/adk/aie_agent   # ターミナルで対話
 """
 
+import functools
 import sys
 from pathlib import Path
 
@@ -26,6 +27,23 @@ INSTRUCTIONS = """\
 - 宿題の答えそのものは書かず、考え方のヒントで導く。
 """
 
+
+
+def error_as_result(func):
+    """ツール関数の ValueError（引数の誤り）を、例外ではなく {"error": ...} の結果として返す。
+
+    第5回で make_quiz に範囲チェック（範囲外は ValueError）を入れたため。ADK では例外がそのまま上がるので、
+    エラー文を結果としてモデルに渡し、モデルが利用者に説明したり引数を直したりできるようにする。
+    """
+    @functools.wraps(func)  # 名前・docstring・引数の型をそのまま引き継ぐ（ツールの宣言が変わらない）
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError as e:
+            return {"error": str(e)}
+    return wrapper
+
+
 root_agent = Agent(
     name="aie_agent",
     model=MODEL,  # 文字列で渡すと Gemini（google-genai）が使われ、GEMINI_API_KEY を読む
@@ -34,7 +52,7 @@ root_agent = Agent(
     tools=[
         tools.search_glossary,      # 関数をそのまま渡すと FunctionTool として包まれる
         tools.get_lecture_summary,
-        tools.make_quiz,
+        error_as_result(tools.make_quiz),
         FunctionTool(tools.save_learning_log, require_confirmation=True),  # 実行前に利用者の確認を求める
     ],
 )
