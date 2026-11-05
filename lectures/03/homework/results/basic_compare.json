@@ -678,5 +678,321 @@
     "input_tokens": 368,
     "output_tokens": 466,
     "output": "Pythonでリストを逆順にする方法はいくつかあります。主なものを3つ紹介します。\n\n---\n\n### 1. `reversed()` 関数を使う（おすすめ）\n元データを変更せず、逆順の「イテレータ（順番に取り出せるもの）」を返します。リストに戻すには `list()` で囲みます。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nreversed_list = list(reversed(my_list))\n\nprint(reversed_list)  # 出力: [5, 4, 3, 2, 1]\nprint(my_list)        # 出力: [1, 2, 3, 4, 5] （元のリストはそのまま）\n```\n\n---\n\n### 2. スライスを使う\n`[::-1]` というスライス構文を使うと、元のリストをコピーして逆順の新しいリストを作ることができます。こちらも元データを変更しません。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nreversed_list = my_list[::-1]\n\nprint(reversed_list)  # 出力: [5, 4, 3, 2, 1]\nprint(my_list)        # 出力: [1, 2, 3, 4, 5] （元のリストはそのまま）\n```\n\n---\n\n### 3. `reverse()` メソッドを使う\nリスト自体の順序をその場で直接（破壊的に）書き換えます。新しいリストを作らないためメモリ効率が良いですが、元のリストが変更されます。\n\n```python\nmy_list = [1, 2, 3, 4, 5]\nmy_list.reverse()\n\nprint(my_list)        # 出力: [5, 4, 3, 2, 1] （元データが書き換わる）\n```\n\n---\n\n### まとめ\n* **元のリストを残したい場合**：`reversed()` または `[::-1]`\n* **元のリストをそのまま書き換えたい場合**：`.reverse()`\n\n用途に合わせて使い分けてみてください！"
+  },
+  {
+    "variant": "V6_batch_glossary_doc",
+    "question": "Q1_lora_qlora",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA QLoRA"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora"
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1203,
+    "output_tokens": 231,
+    "output": "LoRAとQLoRAの主な違いは、**ベースモデルの重みをそのまま使うか、量子化（軽量化）して使うか**という点です。\n\n* **LoRA（Low-Rank Adaptation）**\n  * **仕組み:** 事前学習済みの重みを固定したまま、追加の小さな低ランク行列（アダプタ）だけを学習して効率よく微調整（ファインチューニング）する手法です。\n  * **特徴:** 学習するパラメータ数が大幅に削減され、メモリやストレージを節約できます。\n\n* **QLoRA（Quantized LoRA）**\n  * **仕組み:** ベースモデルの重みを**4ビットなどに量子化**してメモリ使用量を極限まで抑えたうえで、LoRAによる学習を行う手法です。\n  * **特徴:** LoRAの効率性の高さに加え、さらに大きなモデルをより小さなGPUメモリ環境でも動かせるようにした発展的な手法です。\n\n関連する回：第2回"
+  },
+  {
+    "variant": "V6_batch_glossary_doc",
+    "question": "Q1_lora_qlora",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA QLoRA"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora"
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1203,
+    "output_tokens": 209,
+    "output": "LoRAとQLoRAの主な違いは、**ベースモデルの重みの保持方法（量子化の有無）**にあります。\n\n* **LoRA（Low-Rank Adaptation）**\n  * 事前学習済みの重みをそのまま（通常の精度で）固定し、その周囲に「低ランク行列」と呼ばれる小さな更新用のパラメータを追加して学習する手法です。\n  * 学習パラメータや保存するファイルサイズを大幅に削減できます。\n\n* **QLoRA（Quantized LoRA）**\n  * LoRAの仕組みをベースにしつつ、**ベースモデルの重みを4ビットなどの低ビットに量子化（圧縮）**してメモリ消費量をさらに節約したうえで学習する手法です。\n  * これにより、より大きなモデルを限られたGPUメモリ上でも効率よく学習させることが可能になります。\n\n（関連する回：第2回）"
+  },
+  {
+    "variant": "V6_batch_glossary_doc",
+    "question": "Q3_rag",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "検索拡張生成"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG 検索"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"ファインチューニング\", \"lecture\": 2, \"definition\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\", \"related\": [\"sft\", \"peft\", "
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「検索拡張生成」は見つかりませんでした。"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「RAG 検索」は見つかりませんでした。"
+      }
+    ],
+    "requests": 4,
+    "input_tokens": 2442,
+    "output_tokens": 212,
+    "output": "AIエンジニアリング講座（AIE2026）の用語集を調べましたが、「RAG」に関する定義や解説は用語集に登録されていませんでした。\n\n一般的に、AIや大規模言語モデル（LLM）の分野における **RAG（Retrieval-Augmented Generation / 検索拡張生成）** とは、LLMが回答を生成する前に、外部のデータベースやドキュメントから関連する情報を検索（Retrieval）し、その情報をプロンプトに含めて参照させることで、より正確で最新の回答を生成させる技術・アーキテクチャのことを指します。\n\n※この講座におけるRAGの詳しい扱いについては、該当する回の講義資料や講師からの案内をご確認ください。"
+  },
+  {
+    "variant": "V6_batch_glossary_doc",
+    "question": "Q3_rag",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG 検索拡張生成"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"ファインチューニング\", \"lecture\": 2, \"definition\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\", \"related\": [\"sft\", \"peft\", "
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「RAG 検索拡張生成」は見つかりませんでした。"
+      }
+    ],
+    "requests": 3,
+    "input_tokens": 1742,
+    "output_tokens": 179,
+    "output": "用語集には、「RAG」に関する直接の定義は登録されていませんでした。\n\n（一般的な用語として補足しますと、RAGは「Retrieval-Augmented Generation（検索拡張生成）」の略で、LLM（大規模言語モデル）が回答を生成する際に、外部のデータベースや文書などから関連する情報を検索し、その情報を組み込んで回答の精度を高める技術のことです。これにより、モデルが学習していない最新情報や社内データに基づいた正確な回答が可能になります。）\n\n関連する技術やデータ活用については、講座の各回で詳しく扱われています。\n\n関連する回：第2回（ファインチューニングなど）"
+  },
+  {
+    "variant": "V7_without_must_line",
+    "question": "Q1_lora_qlora",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2回演習ではモデルがGPUに載るためLoRAで学習し、4ビットで読み込んだときのメモリと出力の違いを発展で比べる。\", \"related\": [\"lora\", \""
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1460,
+    "output_tokens": 177,
+    "output": "講座の用語集によると、LoRAとQLoRAの違いは以下のとおりです。\n\n* **LoRA**\n  事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法です。学習するパラメータが少なく、学習結果も小さいファイルで保存できます。\n* **QLoRA**\n  ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法です。より大きなモデルを小さなGPUで扱うことができます。\n\n（関連する回：第2回）"
+  },
+  {
+    "variant": "V7_without_must_line",
+    "question": "Q1_lora_qlora",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2回演習ではモデルがGPUに載るためLoRAで学習し、4ビットで読み込んだときのメモリと出力の違いを発展で比べる。\", \"related\": [\"lora\", \""
+      }
+    ],
+    "requests": 2,
+    "input_tokens": 1460,
+    "output_tokens": 172,
+    "output": "LoRAとQLoRAの違いは以下の通りです。\n\n* **LoRA**: 事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列（低ランク行列）で表し、その部分だけを学習するPEFT手法です。学習するパラメータ数が少なく、効率的にファインチューニングを行えます。\n* **QLoRA**: ベースモデルの重みを4ビットなどに量子化（圧縮）してメモリを大幅に節約したうえで、LoRAによる学習を行う手法です。LoRAよりもさらに少ないメモリで、大きなモデルを扱うことができます。\n\n関連する回：第2回"
+  },
+  {
+    "variant": "V7_without_must_line",
+    "question": "Q3_rag",
+    "rep": 0,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "Retrieval-Augmented Generation"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "外部知識"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "検索拡張生成"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "検索"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"ファインチューニング\", \"lecture\": 2, \"definition\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\", \"related\": [\"sft\", \"peft\", "
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「Retrieval-Augmented Generation」は見つかりませんでした。"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「外部知識」は見つかりませんでした。"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「検索拡張生成」は見つかりませんでした。"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"ツール（Tool use / Function calling）\", \"lecture\": 3, \"definition\": \"モデルが呼び出せるように用意した関数。モデルはツールの名前・説明・引数の型を見て、必要なときに引数を決めて呼び出しを依頼し、実行はプログラム側が行う。検索、計算、ファイル操作、外部APIの呼び出しなどに使う。\", \"related\": [\"tool-"
+      }
+    ],
+    "requests": 6,
+    "input_tokens": 4172,
+    "output_tokens": 264,
+    "output": "申し訳ありません。「RAG」という用語は、現在の講座の用語集には登録されていないようです。\n\nAIエンジニアリングにおいて、RAG（Retrieval-Augmented Generation / 検索拡張生成）は、大規模言語モデル（LLM）が回答を生成する際に、外部のデータベースやドキュメントから関連する情報をあらかじめ検索（Retrieval）し、その情報を踏まえて（Augmented）回答を生成（Generation）する仕組みを指します。これにより、モデルが学習していない最新の情報や、社内文書などの固有データを参照した正確な回答が可能になります。\n\n講座内でこれに近い概念としては、第3回などで扱う外部のデータソースやツールと連携する仕組み（ツール利用やMCPなど）が関連してきます。\n\n（関連する回：第3回など）"
+  },
+  {
+    "variant": "V7_without_must_line",
+    "question": "Q3_rag",
+    "rep": 1,
+    "calls": [
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "RAG"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "Retrieval"
+        }
+      },
+      {
+        "tool": "search_glossary",
+        "args": {
+          "query": "検索"
+        }
+      }
+    ],
+    "returns": [
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"ファインチューニング\", \"lecture\": 2, \"definition\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\", \"related\": [\"sft\", \"peft\", "
+      },
+      {
+        "tool": "search_glossary",
+        "content": "用語集に「Retrieval」は見つかりませんでした。"
+      },
+      {
+        "tool": "search_glossary",
+        "content": "[{\"term\": \"ツール（Tool use / Function calling）\", \"lecture\": 3, \"definition\": \"モデルが呼び出せるように用意した関数。モデルはツールの名前・説明・引数の型を見て、必要なときに引数を決めて呼び出しを依頼し、実行はプログラム側が行う。検索、計算、ファイル操作、外部APIの呼び出しなどに使う。\", \"related\": [\"tool-"
+      }
+    ],
+    "requests": 4,
+    "input_tokens": 2648,
+    "output_tokens": 203,
+    "output": "講座の用語集に「RAG」という用語の直接的な定義は見つかりませんでした。（※検索に関する仕組みとしては、第3回などで「ツール（Tool use / Function calling）」や「MCP」といった外部データや機能の連携を扱います。）\n\n推測で断定することは避けておりますので、「RAG」の詳細な定義については講座の用語集には登録されていません。一般的な文脈では、RAG（Retrieval-Augmented Generation：検索拡張生成）は、LLMが回答を生成する前に外部のデータベースやドキュメントから関連情報を検索し、その情報を参考にしてより正確な回答を作る技術を指します。\n\n関連する回：第3回、第5回"
+  },
+  {
+    "variant": "V7_without_must_line",
+    "question": "Q5_general",
+    "rep": 0,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 450,
+    "output_tokens": 263,
+    "output": "Pythonでリストを逆順にするには、いくつかの方法があります。\n\n1. **`reversed()` 関数を使う**\n   元のリストを変更せずに、逆順のイテレータを返します。リストに戻すには `list()` で囲みます。\n   ```python\n   my_list = [1, 2, 3]\n   reversed_list = list(reversed(my_list))\n   ```\n\n2. **スライス（Slicing）を使う**\n   `[::-1]` というスライス構文を使うと、簡単に逆順の新しいリストを作ることができます。\n   ```python\n   my_list = [1, 2, 3]\n   reversed_list = my_list[::-1]\n   ```\n\n3. **`reverse()` メソッドを使う**\n   リストオブジェクトのメソッドで、**元のリストそのものを**逆順に書き換えます（新しいリストは作られません）。\n   ```python\n   my_list = [1, 2, 3]\n   my_list.reverse()  # my_list 自体が [3, 2, 1] になる\n   ```\n\n用途に合わせて使い分けてみてください。\n\n（関連する回：第1回）"
+  },
+  {
+    "variant": "V7_without_must_line",
+    "question": "Q5_general",
+    "rep": 1,
+    "calls": [],
+    "returns": [],
+    "requests": 1,
+    "input_tokens": 450,
+    "output_tokens": 301,
+    "output": "Pythonでリストを逆順にするには、いくつかの方法があります。主な方法を3つご紹介します。\n\n### 1. `reversed()` 関数を使う（おすすめ）\n元のリストを変更せずに、逆順のイテレータを返します。リストに戻すには `list()` で囲みます。\n```python\noriginal = [1, 2, 3, 4]\nreversed_list = list(reversed(original))\nprint(reversed_list)  # [4, 3, 2, 1]\n```\n\n### 2. スライス（`[::-1]`）を使う\nPythonらしい簡潔な書き方です。こちらも元のリストは変更されません。\n```python\noriginal = [1, 2, 3, 4]\nreversed_list = original[::-1]\nprint(reversed_list)  # [4, 3, 2, 1]\n```\n\n### 3. `reverse()` メソッドを使う\nリスト自体をその場で（インプレースで）書き換えます。新しいリストを作らないためメモリ効率が良いですが、元のリストが変更される点に注意してください。\n```python\noriginal = [1, 2, 3, 4]\noriginal.reverse()\nprint(original)  # [4, 3, 2, 1]\n```\n\n---\n関連する回：第1回（Python基礎）"
   }
 ]
