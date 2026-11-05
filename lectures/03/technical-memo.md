@@ -447,13 +447,31 @@ curl -s $B/openapi.json                                   # 使える API の一
 - **1 回ずつの実行で「フレームワークの差」と言わない。** 同じ質問でも、検索してから保存するか、すぐ保存するかは実行ごとに変わりました
 - ツール宣言（名前・引数のスキーマ・説明文）が、どちらも同じ docstring と型ヒントから作られていることは、`FunctionTool(関数)._get_declaration()` で確かめられます
 
+### 課題文どおりの形（`adk_agent/glossary_agent/`、`adk run`）
+
+10/31 の課題文の改訂で、発展（a）は `adk_agent/glossary_agent/` に置き、`adk run` で動かす形になりました。上の `aie_agent`（承認付きのツールまで入れた版）とは別に、課題文のコードどおりの版を置いています。
+
+```bash
+# リポジトリ直下で。uv.lock / pyproject.toml は変わらない
+PYTHONPATH=. uv run --with google-adk adk run adk_agent/glossary_agent
+
+# ツール呼び出しも残したいとき：会話を SQLite に保存して、あとで events テーブルを読む
+PYTHONPATH=. uv run --with google-adk adk run --session_service_uri sqlite:////tmp/adk.db adk_agent/glossary_agent
+```
+
+- `uv run --with google-adk` は repo の環境（Pydantic AI 入り）に ADK を足すので、`from app.agent import INSTRUCTIONS` がそのまま使えます。別の venv に ADK だけを入れた場合は、`app.agent` を import できません（`aie_agent` で INSTRUCTIONS を複製したのはこのため）
+- `adk run` の画面には回答しか出ません。ツール呼び出しは、セッションの保存先（`--session_service_uri`）の `events.event_data`（JSON）の `content.parts[].function_call` にあります
+- `adk run` は 1 つのセッションで会話を続けるので、確認問題の答え合わせのような続きの会話ができます。その分、入力トークンは質問ごとに増えます
+- 引数無しで動かすと、`adk_agent/glossary_agent/.adk/session.db` に会話が保存されます（`.gitignore` 済み）
+
 ---
 
 ## 5. 結果ファイル
 
 | 場所 | 内容 |
 |---|---|
-| `lectures/03/homework/results/basic_compare.json` | 基礎：6 つの版 × 質問ごとのツール呼び出し・ツールの結果・requests・トークン・回答 |
+| `lectures/03/homework/results/basic_compare.json` | 基礎：8 つの版（V6・V7 は 11/05 に追加。V0〜V5 の記録には、ツールの結果が入っていないものがある） × 質問ごとのツール呼び出し・ツールの結果・requests・トークン・回答 |
 | `lectures/03/homework/results/adk_compare.json` | 発展：ADK 版の 5 つの例のイベント・LLM 呼び出し回数・トークン・保存されたファイル |
+| `lectures/03/homework/results/adk_run_session.json` | 発展：課題文どおりの形で `adk run` した 1 セッション（4 問）のイベント（ツール呼び出し・結果・回答・入力トークン） |
 
 モデルの出力は実行ごとに揺れるので、同じ手順でも細部は変わることがあります。比べるときは、ツールの選び方の型（呼ぶ・呼ばない、並べて呼ぶ・順に呼ぶ）を見てください。

@@ -31,6 +31,18 @@ NARROW_GLOSSARY_DOC = """講座の用語集から用語を検索し、定義と�
 LoRA や LLM のような一般的な AI の用語には使わず、自分の知識で答えること。query には調べたい用語を1つだけ入れる。
 """
 
+# 課題文の例 2：「用語を1つだけ入れる」を「まとめて入れる」に変える（それ以外は元の docstring と同じ）
+BATCH_GLOSSARY_DOC = """講座の用語集から用語を検索し、定義と、どの回で扱うかを返す。
+
+AIエンジニアリングの用語や、この講座（AIE2026）に固有の言葉について
+答える前に使うこと。query には調べたい用語をまとめて入れる（例: "LoRA QLoRA"）。
+"""
+
+# 課題文の例 1：INSTRUCTIONS から「必ず search_glossary で用語集を確認する」の 1 行だけを消す
+INSTRUCTIONS_WITHOUT_MUST = "".join(
+    line for line in INSTRUCTIONS.splitlines(keepends=True) if "必ず search_glossary" not in line)
+assert INSTRUCTIONS_WITHOUT_MUST != INSTRUCTIONS
+
 QUIZ_DOC_WITHOUT_HIDING = """指定した回（1始まりの整数）の用語から1つを選び、「この用語の意味は？」という確認問題と答えを返す。
 
 「第2回の確認問題を出して」「LoRAの回の復習クイズがほしい」のように、
@@ -51,6 +63,9 @@ VARIANTS = {
     # V3・V2 の結果を切り分けるために追加した版（INSTRUCTIONS を最小にして、説明文の効果だけを見る）
     "V4_minimal_and_quiz_doc_without_hiding": (MINIMAL_INSTRUCTIONS, {tools.make_quiz: QUIZ_DOC_WITHOUT_HIDING}),
     "V5_minimal_and_narrow_glossary_doc": (MINIMAL_INSTRUCTIONS, {tools.search_glossary: NARROW_GLOSSARY_DOC}),
+    # 改訂された課題文（2026-10-31）の例に合わせて追加した、1 か所だけを変えた版
+    "V6_batch_glossary_doc": (INSTRUCTIONS, {tools.search_glossary: BATCH_GLOSSARY_DOC}),
+    "V7_without_must_line": (INSTRUCTIONS_WITHOUT_MUST, {}),
 }
 
 QUESTIONS = {
@@ -63,7 +78,9 @@ QUESTIONS = {
 # V3 は make_quiz の説明文だけを変えた版なので、クイズの質問だけで比べる
 QUESTIONS_OF = {"V3_quiz_doc_without_hiding": ["Q4_quiz"],
                 "V4_minimal_and_quiz_doc_without_hiding": ["Q4_quiz"],
-                "V5_minimal_and_narrow_glossary_doc": ["Q1_lora_qlora", "Q3_rag", "Q5_general"]}
+                "V5_minimal_and_narrow_glossary_doc": ["Q1_lora_qlora", "Q3_rag", "Q5_general"],
+                "V6_batch_glossary_doc": ["Q1_lora_qlora", "Q3_rag"],
+                "V7_without_must_line": ["Q1_lora_qlora", "Q3_rag", "Q5_general"]}
 
 
 def build_agent(instructions: str, descriptions: dict) -> Agent:

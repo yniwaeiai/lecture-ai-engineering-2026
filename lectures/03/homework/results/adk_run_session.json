@@ -1,0 +1,143 @@
+{
+  "command": "PYTHONPATH=. uv run --with google-adk adk run --session_service_uri sqlite:///<tmp>/adk.db adk_agent/glossary_agent",
+  "google_adk": "2.13.0",
+  "date": "2026-11-05",
+  "events": [
+    {
+      "invocation": "e-9f51d322-ccd9-4892-8c4f-f85d4e45ad17",
+      "author": "user",
+      "text": "AIE2026の講座の宿題にある「3レベル」とは何ですか？"
+    },
+    {
+      "invocation": "e-9f51d322-ccd9-4892-8c4f-f85d4e45ad17",
+      "author": "glossary_agent",
+      "function_call": {
+        "name": "search_glossary",
+        "args": {
+          "query": "3レベル"
+        }
+      },
+      "prompt_tokens": 549,
+      "output_tokens": 18
+    },
+    {
+      "invocation": "e-9f51d322-ccd9-4892-8c4f-f85d4e45ad17",
+      "author": "glossary_agent",
+      "function_response": {
+        "name": "search_glossary",
+        "response": {
+          "result": "[{\"term\": \"宿題の3レベル\", \"lecture\": 1, \"definition\": \"AIE2026の宿題の構成。「基礎（講義内容の確認）」「実装（自分でコードを書く）」「発展（調査や試行）」の3段階があり、どれか1つに取り組めばその回の宿題は完了。原則として採点はしない。\", \"related\": [\"answer-md\"]}]"
+        }
+      }
+    },
+    {
+      "invocation": "e-9f51d322-ccd9-4892-8c4f-f85d4e45ad17",
+      "author": "glossary_agent",
+      "text": "AIE2026における「3レベル」とは、宿題の構成の仕組みを指します。\n\n宿題には以下の3段階が用意されており、受講者はこの中からどれか1つを選んで取り組めば、その回の宿題は完了となります（原則として採点は行われません）。\n\n1. **基礎**：講義内容の確認\n2. **実装**：自分でコードを書く\n3. **発展**：調査や試行\n\n関連する回：第1回",
+      "prompt_tokens": 672,
+      "output_tokens": 109
+    },
+    {
+      "invocation": "e-b4963f18-6564-4b1f-a782-d71ca52e6205",
+      "author": "user",
+      "text": "LoRAとQLoRAの違いは？"
+    },
+    {
+      "invocation": "e-b4963f18-6564-4b1f-a782-d71ca52e6205",
+      "author": "glossary_agent",
+      "function_call": {
+        "name": "search_glossary",
+        "args": {
+          "query": "LoRA"
+        }
+      },
+      "prompt_tokens": 792,
+      "output_tokens": 37
+    },
+    {
+      "invocation": "e-b4963f18-6564-4b1f-a782-d71ca52e6205",
+      "author": "glossary_agent",
+      "function_call": {
+        "name": "search_glossary",
+        "args": {
+          "query": "QLoRA"
+        }
+      },
+      "prompt_tokens": 792,
+      "output_tokens": 37
+    },
+    {
+      "invocation": "e-b4963f18-6564-4b1f-a782-d71ca52e6205",
+      "author": "glossary_agent",
+      "function_response": {
+        "name": "search_glossary",
+        "response": {
+          "result": "[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora-rank\", \"qlora\"]}, {\"term\": \"ランク（LoRAのr）\", \"lecture\": 2, \"definition\": \"LoRAで使う低ランク行列の大きさを決めるハイパーパラメータ。大きいほど表現力が上がるが、学習するパラメータとメモリも増える。\", \"related\": [\"lora\"]}, {\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2回演習ではモデルがGPUに載るためLoRAで学習し、4ビットで読み込んだときのメモリと出力の違いを発展で比べる。\", \"related\": [\"lora\", \"quantization\"]}]"
+        }
+      }
+    },
+    {
+      "invocation": "e-b4963f18-6564-4b1f-a782-d71ca52e6205",
+      "author": "glossary_agent",
+      "function_response": {
+        "name": "search_glossary",
+        "response": {
+          "result": "[{\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2回演習ではモデルがGPUに載るためLoRAで学習し、4ビットで読み込んだときのメモリと出力の違いを発展で比べる。\", \"related\": [\"lora\", \"quantization\"]}, {\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora-rank\", \"qlora\"]}]"
+        }
+      }
+    },
+    {
+      "invocation": "e-b4963f18-6564-4b1f-a782-d71ca52e6205",
+      "author": "glossary_agent",
+      "text": "LoRAとQLoRAの違いは以下の通りです。\n\n* **LoRA**\n  事前学習済みの重みを固定したまま、重みの更新分を2つの小さな行列（低ランク行列）で表し、その小さな行列（アダプタ）だけを学習するPEFT（Parameter-Efficient Fine-Tuning）手法です。学習パラメータや保存ファイルを少なく抑えられます。\n* **QLoRA**\n  ベースモデルの重みを4ビットなどに量子化（Quantization）してメモリを大きく節約したうえで、LoRAによる学習を行う手法です。これにより、より大きなモデルを小さなGPUでも扱えるようになります。\n\n関連する回：第2回",
+      "prompt_tokens": 1348,
+      "output_tokens": 147
+    },
+    {
+      "invocation": "e-f19f43b7-c394-46ba-aa66-44cdf165818f",
+      "author": "user",
+      "text": "第2回の内容から確認問題を1問出して"
+    },
+    {
+      "invocation": "e-f19f43b7-c394-46ba-aa66-44cdf165818f",
+      "author": "glossary_agent",
+      "function_call": {
+        "name": "make_quiz",
+        "args": {
+          "lecture": 2
+        }
+      },
+      "prompt_tokens": 1507,
+      "output_tokens": 14
+    },
+    {
+      "invocation": "e-f19f43b7-c394-46ba-aa66-44cdf165818f",
+      "author": "glossary_agent",
+      "function_response": {
+        "name": "make_quiz",
+        "response": {
+          "result": "{\"lecture\": 2, \"question\": \"「ファインチューニング」の意味は？\", \"answer\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\"}"
+        }
+      }
+    },
+    {
+      "invocation": "e-f19f43b7-c394-46ba-aa66-44cdf165818f",
+      "author": "glossary_agent",
+      "text": "それでは第2回からの確認問題です！\n\n**Q. 「ファインチューニング」の意味は何でしょうか？**\n\nご自身の言葉で考えて教えてくださいね。答えていただいたあとに正解（用語集の定義）をお伝えします！",
+      "prompt_tokens": 1625,
+      "output_tokens": 51
+    },
+    {
+      "invocation": "e-ecabc4b6-a7f8-435f-8704-7c78e222d200",
+      "author": "user",
+      "text": "わかりません。答えを教えてください"
+    },
+    {
+      "invocation": "e-ecabc4b6-a7f8-435f-8704-7c78e222d200",
+      "author": "glossary_agent",
+      "text": "了解しました！今回の確認問題の答え（用語集の定義）はこちらです。\n\n> **ファインチューニング**\n> 事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\n\n関連する回：第2回",
+      "prompt_tokens": 1685,
+      "output_tokens": 102
+    }
+  ]
+}
