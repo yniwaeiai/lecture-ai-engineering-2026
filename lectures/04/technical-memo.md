@@ -1,6 +1,6 @@
 # 第4回 技術メモ：演習と宿題（基礎）を再現するための手順とコード
 
-このメモでは、第4回の演習（STEP 1〜3）と宿題（基礎）を、他の人が再現できるように手順をまとめます。今回は、STEP 1 のラベル付けを人ではなく ChatGPT の GPT-6 に頼みました。その手順も含めて書きます。結果と考察は [answer.md](answer.md) にあります。
+このメモでは、第4回の演習（STEP 1〜3）と宿題（基礎・実装・発展）を、他の人が再現できるように手順をまとめます。今回は、STEP 1 のラベル付けを人ではなく ChatGPT の GPT-6 に頼みました。その手順も含めて書きます。結果と考察は [answer.md](answer.md) にあります。
 
 `app/` と `tests/` は変えていません。変えたのは、採点の基準 `data/eval/rubric.md`（STEP 3）だけです。
 
@@ -170,7 +170,96 @@ for m in ("gemini-3.5-flash-lite", "gemini-3.5-flash"):
 
 ---
 
-## 5. 自分（人）のラベルに差し替えるとき
+## 5. 宿題（実装）：自分の評価セットを作り、自分のエージェントの回答を採点する
+
+### 5.1 評価セットを作る（`data/eval/my_cases.jsonl`）
+
+`tools/annotate.py` の「作問」画面と同じ形式（`id`・`category`・`question`・`answer`・`reference.glossary`・`reference.expected`）で、10 件をファイルに直接書きました。`reference.glossary` には用語集の `id` を入れます。書いたあと、すべての `id` が用語集にあることを確かめました。
+
+```python
+from app import tools
+ids = {e["id"] for e in tools.load_glossary()}
+missing = [g for c in cases for g in c["reference"]["glossary"] if g not in ids]   # 空なら OK
+```
+
+各件のねらいは [answer.md](answer.md) の表にあります。自分のエージェントに後から足した機能（`make_quiz` の範囲チェック、承認付きの `save_learning_log`、MCP の回で足したエラー処理）が壊れそうな入力を、意図して入れました。
+
+**注意（今回の誤り）**：参照（`reference.glossary`）には、回答が根拠にしうる用語をすべて入れます。確認問題のように答えがランダムに変わる質問で、参照に一部の用語しか入れないと、正しい回答が「用語集にない」と判定されます（m04 で起きた）。直した版が `data/eval/my_cases_v2.jsonl` です（m04 の参照を第2回の 12 語にした。質問と回答は同じ）。
+
+### 5.2 自分のエージェントに回答を生成させる
+
+```bash
+uv run python -m app.judge --generate --cases data/eval/my_cases.jsonl   # 回答を同じファイルに書き込む
+```
+
+- `app/judge.py` の `generate_answers` は、`app.agent` の `agent.run_sync(question)` を呼び、`str(result.output)` を回答にします
+- このエージェントは `output_type=[str, DeferredToolRequests]` で、承認付きのツール（`save_learning_log`）が呼ばれると、実行せずに `DeferredToolRequests` を返して止まります。`generate_answers` はこれを想定していないので、**承認待ちのオブジェクトの文字列表現がそのまま回答になります**（m06）。評価用の生成では、次のように承認を自動で拒否して続きを実行させる方法が考えられます（今回は、壊れ方そのものを評価の対象にするため、配布のまま使いました）
+
+```python
+from pydantic_ai import DeferredToolRequests, DeferredToolResults, ToolDenied
+result = agent.run_sync(question, model=model)
+while isinstance(result.output, DeferredToolRequests):
+    denied = DeferredToolResults(approvals={c.tool_call_id: ToolDenied("評価中のため保存しません") for c in result.output.approvals})
+    result = agent.run_sync(message_history=result.all_messages(), deferred_tool_results=denied, model=model)
+```
+
+### 5.3 ラベルを付ける（GPT-6）
+
+演習と同じ手順です（1 章）。依頼文を作るスクリプトに `--cases` を足しました。件数と例の `id` は評価セットに合わせて変わります（既定の評価セットでは、出力が演習で送った依頼文と同じであることを `cmp` で確かめています）。
+
+```bash
+uv run python lectures/04/homework/make_label_prompt.py --cases data/eval/my_cases.jsonl > /tmp/my_label_prompt.txt
+```
+
+- 保存先は `lectures/04/my_labels.jsonl`（各行に `labeler` を付けた）
+- ChatGPT の画面の作りが演習のときから変わり、入力欄の `#prompt-textarea` という id が無くなっていました。入力欄をクリックしてから `document.activeElement` に `paste` イベントを送りました。返答も `[data-message-author-role]` で取れなくなっていたので、ページの本文から `{"id":"m` で始まる行を取り出しました
+
+### 5.4 採点する
+
+```bash
+uv run python -m app.judge --cases data/eval/my_cases.jsonl --labels lectures/04/my_labels.jsonl --out lectures/04/my_judge_result.json
+uv run python -m app.judge --cases data/eval/my_cases_v2.jsonl --labels lectures/04/my_labels.jsonl --out lectures/04/my_judge_result_v2.json   # 参照を直した版
+```
+
+採点の基準は、STEP 3 で直したあとの `data/eval/rubric.md` です。
+
+### 5.5 コードで判定する基準（`homework/code_checks.py`）
+
+```bash
+uv run python lectures/04/homework/code_checks.py                                            # 自分の評価セット
+uv run python lectures/04/homework/code_checks.py --cases data/eval/lec04_cases.jsonl --out /tmp/cc.json   # 演習の評価セットにも当てられる
+```
+
+API キー不要で、回答の文字列と用語集・INSTRUCTIONS だけで決まります。判定は pass / fail / na（その件には当てはまらない）です。
+
+| チェック | 中身 | 実装の要点 |
+|---|---|---|
+| `lecture_mark` | 配布の「回の表示」（最後の行に第N回） | `app.judge.check_lecture_mark` をそのまま使う |
+| `lecture_mark_strict` | 最後の行の第N回が 1〜13 で、例文（「例：」「など」）ではない | m05 の「（例：「第1回の確認問題を出して」など）」や、演習の #10 の「第14回」を fail にする |
+| `not_internal_object` | 回答が `DeferredToolRequests(` や `ClassName(field=` で始まる内部オブジェクトでない | 正規表現 |
+| `no_prompt_leak` | INSTRUCTIONS の箇条書きの各行が、回答に含まれていない | `app/agent.py` から INSTRUCTIONS の文字列を取り出して比べる。Pydantic AI を import しないよう、ソースを正規表現で読む |
+| `quiz_answer_hidden` | 確認問題の件で、用語名とその定義（先頭 25 文字）が回答に含まれていない | 定義の一部が含まれていれば答えを見せたと判定 |
+| `lecture_in_range` | 「第0回」「第14回」などを、ある回として扱っていない | 前後 20 文字に「存在しない／ありません／ない」があれば除く（粗い） |
+| `quiz_term_in_lecture` | 「第N回の確認問題」で、出題した用語（「」の中）が用語集で第N回の用語 | m04 の誤りを見つけたあとに追加 |
+
+それぞれ、わざと失敗を入れた回答で fail になることを確かめました。
+
+```python
+quiz_answer_hidden({"question": "第2回の確認問題を出して", "answer": "Q.「過学習」とは？ 答え：" + 過学習の定義})   # fail
+not_internal_object("DeferredToolRequests(calls=[])")                                                         # fail
+no_prompt_leak("- 回答の最後に、関係する回（第N回）を示す。")                                                     # fail
+quiz_term_in_lecture({"question": "第2回の確認問題を1問出して", "answer": "Q.「ハーネス」とは？"})                  # fail（ハーネスは第3回）
+```
+
+### 5.6 監査で確かめたこと
+
+- m07・m09 で予測が外れた（断らないと予測したが、断った）ので、エージェントに実際に渡る INSTRUCTIONS とツールの説明文を TestModel で取り出しました。断る指示はどこにも無く、モデル自身の振る舞いでした
+- m04 で 2 つの AI がそろって根拠を fail にしたので、用語集で「過学習」を確かめ、第2回の用語であることを確認しました。原因は、自分が書いた参照の漏れでした
+- `my_cases_v2.jsonl` は m04 の参照だけを変えたものです。質問と回答が元と同じことを、`reference` を除いた各行の比較で確かめました
+
+---
+
+## 6. 自分（人）のラベルに差し替えるとき
 
 1. GPT-6 のラベルを退避する：`cp lectures/04/labels.jsonl lectures/04/labels_gpt6.jsonl`
 2. `uv run --with streamlit==1.66.1 streamlit run tools/annotate.py` で 10 件にラベルを付ける（`lectures/04/labels.jsonl` に保存される）
@@ -188,7 +277,7 @@ uv run python -m app.judge --rubric /tmp/rubric_before.md --out lectures/04/judg
 
 ---
 
-## 6. 結果ファイル
+## 7. 結果ファイル
 
 | 場所 | 内容 |
 |---|---|
@@ -198,6 +287,13 @@ uv run python -m app.judge --rubric /tmp/rubric_before.md --out lectures/04/judg
 | `lectures/04/judge_result.json` | STEP 3：直したあとの採点（GPT-6 のラベルと比較） |
 | `lectures/04/homework/results/model_compare.json` | 宿題：flash-lite と flash の各 3 回の採点と、2 つのラベルとの比較 |
 | `lectures/04/homework/make_label_prompt.py` | STEP 1 の代わり：GPT-6 への依頼文を作る |
-| `lectures/04/homework/model_compare.py` | 宿題：モデルを変えて複数回採点し、比べる |
+| `lectures/04/homework/model_compare.py` | 宿題（基礎）：モデルを変えて複数回採点し、比べる |
+| `data/eval/my_cases.jsonl` | 宿題（実装）：自分の評価セット 10 件と、自分のエージェントの回答 |
+| `data/eval/my_cases_v2.jsonl` | 宿題（実装）：m04 の参照を直した版（質問と回答は同じ） |
+| `lectures/04/my_labels.jsonl` | 宿題（実装）：GPT-6 が付けたラベル |
+| `lectures/04/my_judge_result.json` | 宿題（実装）：Gemini の採点（元の参照） |
+| `lectures/04/my_judge_result_v2.json` | 宿題（実装）：Gemini の採点（参照を直した版） |
+| `lectures/04/homework/code_checks.py` | 宿題（実装）：コードで判定する 7 つのチェック |
+| `lectures/04/homework/results/code_checks.json` | 宿題（実装）：自分の評価セットへのチェック結果 |
 
 モデルの出力は、temperature 0 でも実行ごとに揺れます。同じ手順でも、細部の判定は変わることがあります。

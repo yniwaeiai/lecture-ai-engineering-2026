@@ -2,12 +2,14 @@
 
 使い方（リポジトリ直下で）:
     uv run python lectures/04/homework/make_label_prompt.py > /tmp/label_prompt.txt
+    uv run python lectures/04/homework/make_label_prompt.py --cases data/eval/my_cases.jsonl > /tmp/my_label_prompt.txt   # 宿題（実装）
 
 渡すのは、tools/annotate.py のラベル付け画面に出るのと同じ情報（質問・回答・参照・5 つの基準の説明）だけ。
 参照は app.judge.reference_text で作るので、Gemini の採点に渡る参照と同じ文面になる。
 講師のラベル（lectures/04/reference/labels_instructor.jsonl）は読まない（答えが漏れないように）。
 """
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -33,11 +35,17 @@ HEAD = '''あなたは評価セットのラベル付けをする人間のアノ�
 '''
 
 
-def build_prompt() -> str:
+def build_prompt(cases_path: Path = DEFAULT_CASES) -> str:
+    cases = read_jsonl(cases_path)
     blocks = [f"==== id: {c['id']}\n# 質問\n{c['question']}\n\n# 回答\n{c['answer']}\n\n# 参照\n{reference_text(c)}\n"
-              for c in read_jsonl(DEFAULT_CASES)]
-    return HEAD + "\n".join(blocks)
+              for c in cases]
+    head = HEAD.replace("10件", f"{len(cases)}件").replace('（10行、id の順）', f'（{len(cases)}行、id の順）')
+    if cases and cases[0]["id"] != "01":
+        head = head.replace('{"id": "01"', '{"id": "' + cases[0]["id"] + '"')
+    return head + "\n".join(blocks)
 
 
 if __name__ == "__main__":
-    sys.stdout.write(build_prompt())
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cases", type=Path, default=DEFAULT_CASES)
+    sys.stdout.write(build_prompt(ap.parse_args().cases))
