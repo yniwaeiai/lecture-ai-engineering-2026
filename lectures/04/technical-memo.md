@@ -259,7 +259,139 @@ quiz_term_in_lecture({"question": "第2回の確認問題を1問出して", "ans
 
 ---
 
-## 6. 自分（人）のラベルに差し替えるとき
+## 6. 宿題（発展）：ベンチマーク 4 つの調査と比較
+
+調査日は 2026-11-09 です。コードは書かない課題ですが、数字を確かめるために公開データを取得して集計しました。その手順も書きます。
+
+### 6.1 調べ方と、守ったこと
+
+- 一次資料（論文・公式ブログ・公式リポジトリ・データセット）を優先しました。調べるのは、件数、作った人、作り方、検証、採点、公開後の問題の 6 点です
+- **利用規約への同意が必要なデータセット（GPQA・HLE）は開いていません。** Hugging Face のメタデータで `gated` であることだけを確かめました。問題は、論文に例として載っているものを読みました
+- GPQA と HLE は、問題を平文で公開しないよう求めています（データに canary 文字列を入れている）。そのため、answer.md とこのメモには分野と問われている内容だけを書いています。4 つとも、問題の全文や正解は貼っていません。このリポジトリは公開されているためです
+- OpenAI のブログ 2 本（"Introducing SWE-bench Verified" と "Why we no longer evaluate SWE-bench Verified"）は、取得すると HTTP 403 になり、本文を読めませんでした。そこから引いた数字（93 人、1,699 件、68.3%、16.4% など）は、検索結果に出た本文の抜粋と、Epoch AI のページの引用で確かめたものです
+- 調査の下調べ（文献を集めて要約する作業）は Claude Code のサブエージェントに任せました。そのうえで主要な数字を、下のコマンドで一次データと照合しました。照合で、下調べの誤りが 1 つ見つかりました（τ²-bench v2.0 の「伝達チェックの判定モデルが gpt-5.5」は誤り。CHANGELOG では gpt-5.5 は音声版の模擬ユーザーのモデル）。answer.md には使っていません
+
+### 6.2 一次データでの照合
+
+**SWE-bench Verified**：Hugging Face の datasets-server API で全 500 件を取得し、集計しました（認証不要）。
+
+```bash
+for o in 0 100 200 300 400; do
+  curl -s "https://datasets-server.huggingface.co/rows?dataset=princeton-nlp/SWE-bench_Verified&config=default&split=test&offset=$o&length=100" -o swe_$o.json
+done
+```
+
+```python
+import json, glob, collections
+rows = [r["row"] for f in sorted(glob.glob("swe_*.json")) for r in json.load(open(f))["rows"]]
+len(rows)                                               # 500
+collections.Counter(r["repo"] for r in rows)            # django 231, sympy 75, sphinx 44, matplotlib 34, scikit-learn 32, astropy 22, xarray 22, pytest 19, pylint 10, requests 8, seaborn 2, flask 1
+collections.Counter(r["difficulty"] for r in rows)      # 15分〜1時間 261, 15分未満 194, 1〜4時間 42, 4時間超 3
+```
+
+**τ²-bench**：GitHub の `data/tau2/domains/*/tasks.json` と `CHANGELOG.md` を取得しました。
+
+```bash
+B=https://raw.githubusercontent.com/sierra-research/tau2-bench/main
+for d in airline retail telecom; do curl -sf $B/data/tau2/domains/$d/tasks.json -o tau_$d.json; done
+curl -sf $B/data/tau2/domains/telecom/split_tasks.json -o tel_split.json
+curl -sf $B/CHANGELOG.md -o tau_changelog.md
+```
+
+| 照合した点 | 結果 |
+|---|---|
+| airline のタスク数と採点の観点 | 50 件、すべて DB ＋ COMMUNICATE |
+| retail | 114 件。DB ＋ NL_ASSERTION が 112 件、DB のみが 2 件 |
+| telecom | `tasks.json` は全 2,285 件（ENV_ASSERTION のみ 2,253、ACTION ＋ ENV_ASSERTION 32）。`split_tasks.json` の `base` が 114 件（ほかに small 20・train 74・test 40） |
+| CHANGELOG v1.0.0 | 「Airline task fixes (27 tasks)」「Retail task fixes (26 tasks)」。日付欄は `2026-MM-DD` のまま（taubench.com では 2026 年 2 月の監査とされる） |
+| CHANGELOG v2.0.0（2026-10-19） | 「scores are not comparable with 1.x」。retail と telecom は 50 件ずつレビュー済みの版に差し替え。文章の判定（NL_ASSERTION）のモデルは `gpt-5.4-mini-2026-03-17`（以前は `gpt-4.1`）。伝達のチェックも LLM 判定に変更 |
+
+**GPQA・HLE**：arXiv の要旨ページで照合しました。
+
+```bash
+curl -s https://export.arxiv.org/abs/2311.12022 | grep -o -E "(65|74|34|39)%[^.<]{0,80}"   # 専門家 65%（明らかなミスを除くと 74%）、非専門家 34%、GPT-4 39%
+curl -s https://export.arxiv.org/abs/2501.14249 | grep -o -E "[0-9,]+ questions"           # 2,500 questions
+```
+
+GPQA の Main 448 問は要旨で確かめました。Diamond の 198 問と選別条件、報酬額は論文の本文（2 章）によります。
+
+### 6.3 ベンチマークごとの詳細
+
+#### SWE-bench Verified
+
+| 項目 | 内容 | 出典 |
+|---|---|---|
+| 何を測るか | 実在の GitHub issue を直すパッチを書く能力。Python リポジトリ 1 つと issue 本文を渡し、diff を出力させる | 元論文 https://arxiv.org/abs/2310.06770 |
+| 公開 | 2024-08-13（OpenAI と SWE-bench 原著者の共同） | OpenAI ブログ（403、抜粋で確認）、HF の作成日 |
+| 件数 | 500（12 リポジトリ、issue は 2013〜2023 年） | API で集計 |
+| 作り方 | 作問者はいない。元の SWE-bench（12 リポジトリ・2,294 件）は、issue と紐づきテストを変更したマージ済み PR を自動で収集したもの。Verified は、そこから無作為に選んだ 1,699 件を人が注釈して選別した | 元論文、OpenAI ブログ |
+| 検証 | Python 経験のある開発者 93 人。1 件を 3 人が独立に注釈。観点は、issue の記述が十分か、テストが正しい解を不当に落とさないか、ほかに重大な問題がないか（重大度 0〜3） | OpenAI ブログ（抜粋）、https://epoch.ai/benchmarks/swe-bench-verified |
+| 絞り込み | 68.3% を除外して 500 件。除外理由の内訳として出回っている数字は二次資料にしか無く、確認できなかった | 同上 |
+| 採点 | Docker でパッチを当ててテストを実行。直すべきテスト（FAIL_TO_PASS）と既存テスト（PASS_TO_PASS）がすべて通れば解決。指標は解決率。LLM は使わない | 元論文 |
+| 公開後の問題 | OpenAI は 2026-02-23 に評価をやめた。モデルがよく失敗する 138 問を監査し、その 59.4% に正しい解を落とすテストがあった（全体の少なくとも 16.4%）。フロンティアモデルが問題と解を学習時に見ていた（汚染）ことも理由。Epoch AI の評価は Flawed | OpenAI ブログ（403、抜粋と Epoch の引用で確認）、https://epoch.ai/benchmarks/swe-bench-verified/review |
+| スコア | 公式リーダーボードの上位は約 79%（2025-12）。多くは検証済みの印が付いていない | https://github.com/SWE-bench/swe-bench.github.io の `data/leaderboards.json` |
+
+読んだ 5 件（API で取得した実データ）：`astropy__astropy-12907`、`astropy__astropy-8707`、`django__django-11299`、`django__django-13033`、`pydata__xarray-6992`。要約は answer.md にあります。django-11299 では既存テストが 103 件あり、どれも壊してはいけません。
+
+#### GPQA Diamond
+
+| 項目 | 内容 | 出典 |
+|---|---|---|
+| 何を測るか | 生物・物理・化学の博士レベルの 4 択。検索しても答えが直接は出ない（Google-proof） | https://arxiv.org/abs/2311.12022 |
+| 件数 | 集めた 564 問 → Extended 546 問 → Main 448 問 → Diamond 198 問 | 論文 |
+| 作った人 | Upwork で集めた 61 人。その分野の博士号を持つか、博士課程に在籍している人 | 論文 |
+| 報酬 | 平均で時給約 95 ドル。作問者は 1 問 10 ドルに加え、専門家が正解するたび、非専門家が間違えるたびにボーナス | 論文 |
+| 手順 | 作問 → 専門家の検証 1 → 作問者の改訂 → 専門家の検証 2 → 他分野の博士 3 人による検証（ウェブ検索は無制限、平均 30 分以上） | 論文 |
+| Diamond の条件 | 専門家 2 人とも正解（2 人目が誤っても、誤りを自分で説明できれば可）、かつ非専門家 3 人の正答が 1/3 以下 | 論文 |
+| 品質の指標 | 専門家の正答率 65%（明らかなミスを除くと 74%）、非専門家 34%、GPT-4 39% | 要旨（照合済み） |
+| 採点 | 選択肢の照合。指標は正答率 | 論文 |
+| 公開後の問題 | 無効な問題は約 8% と推定（Epoch AI、2025-05）。上位モデルは約 95% で飽和し、Vals AI は新しいモデルでの評価をやめた。1 問が約 0.5 ポイントに当たるので、上位の差はノイズの範囲 | https://epoch.ai/gradient-updates/gpqa-diamond-whats-left 、https://vals.ai/benchmarks/gpqa |
+
+読んだ問題は、論文の表 1 にある 6 例（化学・有機化学・遺伝学・分子生物学・天体物理・量子力学）。
+
+#### Humanity's Last Exam（HLE）
+
+| 項目 | 内容 | 出典 |
+|---|---|---|
+| 何を測るか | 100 以上の分野の、専門家でなければ解けない問題。記述式（完全一致）と多肢選択（24%）。画像を含む問題が約 14% | https://arxiv.org/abs/2501.14249 、https://lastexam.ai/ |
+| 件数 | 2,500 問（2025-04 に確定。初版の要旨では 3,000 問）。ほかに過学習を確かめる非公開セット | 論文、https://labs.scale.com/leaderboard/humanitys_last_exam |
+| 作った人 | 50 か国・500 以上の機関の約 1,000 人の専門家（主に教授・研究者・大学院の学位を持つ人）。主催は CAIS と Scale AI | 論文 |
+| 報酬 | 賞金総額 50 万ドル（上位 50 問に各 5,000 ドル、次の 500 問に各 500 ドル）と、論文の共著者になる権利 | 論文 |
+| 手順 | 投稿前に、フロンティア LLM（GPT-4o・Gemini 1.5 Pro・Claude 3.5 Sonnet・o1 など）が解けないことを確かめる（試行は 7 万回以上）→ 約 13,000 問が人のレビューへ → 大学院の学位を持つレビュアーが 1〜3 件ずつ 0〜5 で評価 → 2 回目のレビュー（成績の良いレビュアーとオーガナイザー）で承認 → 公開後に誤り報告の報奨金 | 論文 |
+| 採点 | 完全一致の問題は o3-mini が判定（表記の揺れを許す）。多肢選択は照合。指標は正答率と、モデルに答えさせた自信度の較正誤差（RMS） | 論文 |
+| 品質の指標 | 公開セットで専門家の見解が割れる割合は推定 15.4%（生物・化学・健康では約 18%） | 論文の付録 |
+| 公開後の問題 | 生物・化学の 321 問のうち約 29% が文献と矛盾（FutureHouse、2025-07）。無作為 48 問中 22 問に重大な誤り（Epoch AI、2026-08、評価は Flawed）。2,500 問を検証済み・修正済み・不確実に分け直した HLE-Verified（arXiv 2602.13964） | https://www.futurehouse.org/research/hle-exam 、https://epoch.ai/benchmarks/hle/review |
+| スコア | 論文時点は GPT-4o 2.7%、o1 8.0%。Scale のリーダーボード（2026-09）の上位は約 46〜55%（ツールなし） | 論文、Scale |
+
+読んだ問題は、論文の図 2 にある公開例 6 問（古典学・生態学・数学・計算機科学・化学・言語学）。
+
+#### τ²-bench
+
+| 項目 | 内容 | 出典 |
+|---|---|---|
+| 何を測るか | 顧客対応エージェントが、ポリシー文書とツールを使い、LLM が演じる利用者と多ターンで対話してタスクを終えられるか。telecom は利用者側も端末を操作するツールを持つ（dual-control） | https://arxiv.org/abs/2506.07982 |
+| 件数 | airline 50・retail 114・telecom 114（base）。後から banking などが追加 | `tasks.json`（照合済み） |
+| 作った人 | 開発元（Sierra）の研究者。人数と報酬の記載は無い | 論文 |
+| 手順 | airline・retail は前身の τ-bench から引き継ぎ。人が指示を書き、エージェントに実行させ、軌跡を見て曖昧さが消えるまで直す。DB の最終状態が 1 通りに決まるよう設計。telecom は 15 個の部品を組み合わせるプログラムで 2,285 件を生成し、意図と部品の数で 114 件を選ぶ | 論文、τ-bench 論文 https://arxiv.org/abs/2406.12045 |
+| 採点 | タスクごとの `reward_basis` で観点を決め、観点ごとの結果の積（0 か 1）にする。DB（最終状態の照合）、ENV_ASSERTION（利用者の端末の状態）、ACTION（必要な操作をしたか）、COMMUNICATE（伝えるべきことを伝えたか）、NL_ASSERTION（LLM による文章の判定） | `src/tau2/evaluator/evaluator.py`、`tasks.json` |
+| 指標 | pass^k：n 回中 c 回成功したタスクで C(c,k)/C(n,k) を全タスクで平均する。k 回続けてすべて成功する確率で、信頼性を見る（少なくとも 1 回成功すればよい pass@k とは逆） | τ-bench 論文 |
+| 公開後の問題 | v1.0.0 で airline 27 件・retail 26 件を修正（ポリシー上できない補償を期待していた、など）。v2.0.0 で採点を変え、1.x とは比べられない。模擬ユーザー（gpt-4.1）が結果に影響する誤りをする割合は 6〜13%（論文の人手注釈） | CHANGELOG（照合済み）、論文 |
+| スコア | 論文時点の pass^1 は gpt-4.1 で retail 74%・airline 56%・telecom 34%。taubench.com の総合上位は約 85〜88% | 論文、https://taubench.com/ |
+
+読んだ問題は `tasks.json` の airline 2 件・retail 2 件・telecom（small）2 件。要約は answer.md にあります。
+
+### 6.4 講座のヒント（problem.md の表）との違い
+
+| ベンチマーク | ヒントの記述 | 調べた結果 |
+|---|---|---|
+| SWE-bench Verified | 500 件、93 人の開発者が各件 3 名で検証 | 正しい。加えて、1,699 件から選んで 68.3% を落としている |
+| GPQA Diamond | 198 問、専門家が作問し別の専門家 2 名が検証 | 正しい。ただし Diamond の条件には「非専門家 3 人の正答が 1/3 以下」も入る。専門家の検証は「1 人目 → 作問者の改訂 → 2 人目」の順 |
+| HLE | 2,500 問、モデルで事前に選別し専門家が 2 巡レビュー | 正しい。初版の要旨では 3,000 問で、2,500 問は 2025-04 に確定した値 |
+| τ²-bench | シナリオと最終状態で判定 | おおむね正しい。telecom は DB ではなく利用者の端末の状態で判定し、retail は LLM による文章の判定も使う。2026 年に大きな修正（v1.0.0）と採点の変更（v2.0.0）があり、版によってスコアが変わる |
+
+---
+
+## 7. 自分（人）のラベルに差し替えるとき
 
 1. GPT-6 のラベルを退避する：`cp lectures/04/labels.jsonl lectures/04/labels_gpt6.jsonl`
 2. `uv run --with streamlit==1.66.1 streamlit run tools/annotate.py` で 10 件にラベルを付ける（`lectures/04/labels.jsonl` に保存される）
@@ -277,7 +409,7 @@ uv run python -m app.judge --rubric /tmp/rubric_before.md --out lectures/04/judg
 
 ---
 
-## 7. 結果ファイル
+## 8. 結果ファイル
 
 | 場所 | 内容 |
 |---|---|
