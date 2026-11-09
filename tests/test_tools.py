@@ -60,7 +60,10 @@ def test_make_quiz_picks_a_term_of_the_lecture():
 
 
 def test_make_quiz_reports_lecture_without_terms():
-    assert "用語集にありません" in tools.make_quiz(4)   # 第4回は範囲内だが、用語集に用語がない
+    # 範囲内だが用語集に用語がない回を選ぶ（用語集は回が進むと増えるので、番号を決め打ちしない）
+    with_terms = {e["lecture"] for e in tools.load_glossary()}
+    lecture = min(n for n in range(1, tools.NUM_LECTURES + 1) if n not in with_terms)
+    assert "用語集にありません" in tools.make_quiz(lecture)
 
 
 def test_make_quiz_rejects_lecture_out_of_range():

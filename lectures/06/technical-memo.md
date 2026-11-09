@@ -1,15 +1,17 @@
-# 第5回 技術メモ：演習と宿題（基礎・実装・発展）を再現するためのコード変更
+# 第6回 技術メモ：演習と宿題（基礎・実装・発展）を再現するためのコード変更
 
-このメモでは、第5回の演習と宿題の 3 レベルを他の人が再現できるように、`app/` と `tests/` に加えた変更と、そのまま使えるテンプレートを説明します。結果と考察は [answer.md](answer.md) にあります。
+> この回は、講座の予定変更（MCP の回が第5回から第6回へ移動。上流 6df1d11）の前に「第5回」として取り組んだ。2026-11-09 に上流を取り込んだとき、`lectures/05/` から `lectures/06/` に移し、本文の回の番号とパスも第6回に合わせた。
+
+このメモでは、第6回の演習と宿題の 3 レベルを他の人が再現できるように、`app/` と `tests/` に加えた変更と、そのまま使えるテンプレートを説明します。結果と考察は [answer.md](answer.md) にあります。
 
 ## 0. 共通：前提と実行環境
 
 - 第1回〜第3回の PR を fork の `main` にマージしてから、`main` から `lec05` を作りました（第3回の `make_quiz` と、承認待ちのツールを含む `app/agent.py` が前提）
 - `uv sync --frozen` の後、`uv run pytest -q` が通ることを確かめてから始めます
-- `lectures/05/homework/` のスクリプトはパスを指定して実行するので、先頭でリポジトリ直下を `sys.path` に足しています（無いと `ModuleNotFoundError: No module named 'app'`）
+- `lectures/06/homework/` のスクリプトはパスを指定して実行するので、先頭でリポジトリ直下を `sys.path` に足しています（無いと `ModuleNotFoundError: No module named 'app'`）
 
 ```python
-sys.path.insert(0, str(Path(__file__).resolve().parents[3]))  # lectures/05/homework/xxx.py から見たリポジトリ直下
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))  # lectures/06/homework/xxx.py から見たリポジトリ直下
 from app.agent import build_mcp_agent  # noqa: E402
 ```
 
@@ -19,11 +21,11 @@ from app.agent import build_mcp_agent  # noqa: E402
 
 ### ツールを MCP で公開する（`app/mcp_server.py`）
 
-`TODO(第5回 演習)` の場所に 1 行ずつ足します。関数の docstring と型ヒントが、そのまま MCP のツールの説明文と引数になります。
+`TODO(第6回 演習)` の場所に 1 行ずつ足します。関数の docstring と型ヒントが、そのまま MCP のツールの説明文と引数になります。
 
 ```python
 server.tool()(tools.search_glossary)          # もとからある
-server.tool()(tools.get_lecture_summary)      # 第5回 演習で追加
+server.tool()(tools.get_lecture_summary)      # 第6回 演習で追加
 server.tool()(tool_error_on_value_error(tools.make_quiz))  # 第3回のツール（範囲チェックは「3. 実装」）
 # save_learning_log は公開しない。承認（requires_approval）は Pydantic AI 側の仕組みで、MCP 越しには付かないため
 ```
@@ -76,7 +78,7 @@ mkdir -p ~/nonode-bin && ln -sf /usr/bin/realpath /usr/bin/dirname ~/nonode-bin/
 
 ### 2 つのつなぎ方の設定
 
-比較用の設定ファイルを `lectures/05/homework/` に置きました。repo の `app/mcp_servers.json` は演習の形のままにしています。
+比較用の設定ファイルを `lectures/06/homework/` に置きました。repo の `app/mcp_servers.json` は演習の形のままにしています。
 
 ```jsonc
 // mcp_servers.stdio.json：クライアントがサーバーを子プロセスとして起動する
@@ -88,7 +90,7 @@ mkdir -p ~/nonode-bin && ln -sf /usr/bin/realpath /usr/bin/dirname ~/nonode-bin/
 
 ```bash
 uv run python -m app.mcp_server --http      # 別のターミナルで起動しておく（127.0.0.1:8000）
-uv run python lectures/05/homework/ask_via.py lectures/05/homework/mcp_servers.http.json "AIE2026の講座の宿題にある「3レベル」とは何ですか？" http
+uv run python lectures/06/homework/ask_via.py lectures/06/homework/mcp_servers.http.json "AIE2026の講座の宿題にある「3レベル」とは何ですか？" http
 ```
 
 ### プロセスとポートを調べる
@@ -117,7 +119,7 @@ def descendants(root):
     return out
 
 async def main():
-    agent = build_mcp_agent(Path("lectures/05/homework/mcp_servers.stdio.json"))
+    agent = build_mcp_agent(Path("lectures/06/homework/mcp_servers.stdio.json"))
     async with agent:                      # この間はサーバーにつながっている
         for depth, pid, c in descendants(os.getpid()):
             print("  " * depth, pid, c[:90])
@@ -139,9 +141,9 @@ ss -ltnp | grep :8000      # HTTP のサーバーが待ち受けているか
 `app/tools.py` の `search_glossary` の docstring を一時的に書き換え（比べ終わったら元に戻します）、説明文と呼ばれ方を比べます。
 
 ```bash
-uv run python lectures/05/homework/show_desc.py lectures/05/homework/mcp_servers.stdio.json stdio   # 説明文（API キー不要）
-uv run python lectures/05/homework/show_desc.py lectures/05/homework/mcp_servers.http.json  http
-uv run python lectures/05/homework/ask_via.py   lectures/05/homework/mcp_servers.stdio.json "RAGとは何ですか？" stdio
+uv run python lectures/06/homework/show_desc.py lectures/06/homework/mcp_servers.stdio.json stdio   # 説明文（API キー不要）
+uv run python lectures/06/homework/show_desc.py lectures/06/homework/mcp_servers.http.json  http
+uv run python lectures/06/homework/ask_via.py   lectures/06/homework/mcp_servers.stdio.json "RAGとは何ですか？" stdio
 ```
 
 - stdio は、プロセスごとにサーバーを起動し直すので、docstring の変更がすぐ反映されます
@@ -348,8 +350,8 @@ uv run python -c "from app import tools; print(tools.search_glossary('宿題の3
 
 | 場所 | 内容 |
 |---|---|
-| `lectures/05/homework/mcp_servers.stdio.json` | 基礎：stdio で glossary サーバーだけにつなぐ設定 |
-| `lectures/05/homework/mcp_servers.http.json` | 基礎：Streamable HTTP（`127.0.0.1:8000`）につなぐ設定 |
-| `lectures/05/homework/show_desc.py` | 基礎：MCP 経由で見える `search_glossary` の説明文を表示する |
-| `lectures/05/homework/ask_via.py` | 基礎：設定ファイルを指定して質問し、ツール呼び出しと requests を表示する |
+| `lectures/06/homework/mcp_servers.stdio.json` | 基礎：stdio で glossary サーバーだけにつなぐ設定 |
+| `lectures/06/homework/mcp_servers.http.json` | 基礎：Streamable HTTP（`127.0.0.1:8000`）につなぐ設定 |
+| `lectures/06/homework/show_desc.py` | 基礎：MCP 経由で見える `search_glossary` の説明文を表示する |
+| `lectures/06/homework/ask_via.py` | 基礎：設定ファイルを指定して質問し、ツール呼び出しと requests を表示する |
 | `.vscode/mcp.json` | 発展：Copilot Chat（VS Code）から使う設定 |

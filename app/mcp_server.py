@@ -1,4 +1,4 @@
-"""第5回: 用語集と各回の要点を MCP サーバーとして公開する。
+"""第6回: 用語集と各回の要点を MCP サーバーとして公開する。
 
 使い方:
     uv run python -m app.agent --mcp --list-tools   # このサーバーが公開するツールを一覧する（APIキー不要）
@@ -28,11 +28,11 @@ server = MCPServer(
 # 第3回と同じ関数を、そのまま MCP のツールとして公開する。docstring と型ヒントが説明文になる
 server.tool()(tools.search_glossary)
 
-server.tool()(tools.get_lecture_summary)  # 第5回 演習で追加
+server.tool()(tools.get_lecture_summary)  # 第6回 演習で追加
 
 
 def tool_error_on_value_error(func):
-    """ツール関数の ValueError（引数の誤り）を ToolError に変える（第5回 宿題）。
+    """ツール関数の ValueError（引数の誤り）を ToolError に変える（第6回 宿題）。
 
     MCP の SDK は、ToolError のメッセージはそのままモデルに返すが、それ以外の例外は
     「想定外のクラッシュ」として扱い、メッセージをサーバーの中に留める（モデルには

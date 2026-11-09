@@ -51,7 +51,7 @@ def retry_on_value_error(func):
     """ツール関数の ValueError（引数の誤り）を ModelRetry に変え、エラー文をモデルに返して引数を直させる。
 
     tools.py は MCP サーバーや ADK からも使うので、Pydantic AI の例外には依存させない。
-    MCP サーバーでは、同じ ValueError がツールのエラー（isError）としてクライアントに返る（第5回 宿題）。
+    MCP サーバーでは、同じ ValueError がツールのエラー（isError）としてクライアントに返る（第6回 宿題。旧第5回）。
     """
     @functools.wraps(func)  # 名前・docstring・引数の型をそのまま引き継ぐ（ツールの説明文が変わらない）
     def wrapper(*args, **kwargs):
@@ -62,7 +62,7 @@ def retry_on_value_error(func):
     return wrapper
 
 
-agent.tool_plain(retry_on_value_error(tools.make_quiz))  # 第3回 演習で追加（第5回で範囲チェックに対応）
+agent.tool_plain(retry_on_value_error(tools.make_quiz))  # 第3回 演習で追加（第6回で範囲チェックに対応）
 agent.tool_plain(tools.save_learning_log, requires_approval=True)  # 第3回 宿題: 保存の前に利用者の確認を挟む
 
 # 第5回: 使う MCP サーバーの設定ファイル。Claude Desktop や Cursor と同じ "mcpServers" 形式
@@ -152,7 +152,7 @@ def print_trace(result) -> None:
             elif isinstance(part, ToolReturnPart):
                 print(f"[tool return] {part.tool_name} -> {str(part.content)[:120]}…")
             elif isinstance(part, RetryPromptPart) and part.tool_name:
-                # ツールのエラー（引数の誤りなど）は、結果の代わりに再試行の指示としてモデルに戻る（第5回 宿題）
+                # ツールのエラー（引数の誤りなど）は、結果の代わりに再試行の指示としてモデルに戻る（第6回 宿題。旧第5回）
                 print(f"[tool retry]  {part.tool_name} -> {part.model_response().splitlines()[0][:120]}")
     print(f"[usage] {result.usage}")
 

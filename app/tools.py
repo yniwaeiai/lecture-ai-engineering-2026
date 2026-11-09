@@ -93,7 +93,7 @@ def make_quiz(lecture: int) -> str:
     lecture は 1〜13（AIE2026 は全13回）。範囲外ならエラーになる。
     """
     if not 1 <= lecture <= NUM_LECTURES:
-        # 存在しない回はツールの使い方の誤りなので、例外にしてモデルに引数を直させる（第5回 宿題）
+        # 存在しない回はツールの使い方の誤りなので、例外にしてモデルに引数を直させる（第6回 宿題。旧第5回）
         raise ValueError(f"lecture は 1〜{NUM_LECTURES} の整数で指定してください（AIE2026 は全{NUM_LECTURES}回）。指定された値: {lecture}")
     candidates = [e for e in load_glossary() if e["lecture"] == lecture]
     if not candidates:

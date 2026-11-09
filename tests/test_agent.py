@@ -32,7 +32,7 @@ def test_base_tools_are_registered_and_called():
     assert BASE_TOOLS <= called
     # 承認が必要なツール（第3回 宿題の save_learning_log）は、承認されるまで実行されず結果も戻らない
     pending = result.output.approvals if isinstance(result.output, DeferredToolRequests) else []
-    # 引数の誤り（第5回 宿題の make_quiz の範囲チェック。TestModel は lecture=0 を渡す）は、
+    # 引数の誤り（第6回 宿題の make_quiz の範囲チェック。TestModel は lecture=0 を渡す）は、
     # 結果の代わりに再試行の指示（RetryPromptPart）としてモデルに戻る
     answered = len(_parts(result, ToolReturnPart)) + len(_parts(result, RetryPromptPart))
     assert answered == len(_parts(result, ToolCallPart)) - len(pending)

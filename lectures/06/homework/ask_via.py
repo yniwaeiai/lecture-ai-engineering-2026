@@ -1,7 +1,7 @@
-"""第5回 宿題（基礎）: 設定ファイルを指定して MCP 経由で質問し、ツール呼び出しと requests を 1 行で表示する（要 GEMINI_API_KEY）。
+"""第6回 宿題（基礎）: 設定ファイルを指定して MCP 経由で質問し、ツール呼び出しと requests を 1 行で表示する（要 GEMINI_API_KEY）。
 
 使い方（リポジトリ直下で）:
-    uv run python lectures/05/homework/ask_via.py lectures/05/homework/mcp_servers.http.json "RAGとは何ですか？" http
+    uv run python lectures/06/homework/ask_via.py lectures/06/homework/mcp_servers.http.json "RAGとは何ですか？" http
 """
 
 import sys

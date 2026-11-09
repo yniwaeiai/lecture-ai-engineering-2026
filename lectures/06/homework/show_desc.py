@@ -1,8 +1,8 @@
-"""第5回 宿題（基礎）: 設定ファイルを指定して、MCP 経由で見える search_glossary の説明文を表示する（API キー不要）。
+"""第6回 宿題（基礎）: 設定ファイルを指定して、MCP 経由で見える search_glossary の説明文を表示する（API キー不要）。
 
 使い方（リポジトリ直下で）:
-    uv run python lectures/05/homework/show_desc.py lectures/05/homework/mcp_servers.stdio.json stdio
-    uv run python lectures/05/homework/show_desc.py lectures/05/homework/mcp_servers.http.json  http
+    uv run python lectures/06/homework/show_desc.py lectures/06/homework/mcp_servers.stdio.json stdio
+    uv run python lectures/06/homework/show_desc.py lectures/06/homework/mcp_servers.http.json  http
 """
 
 import sys

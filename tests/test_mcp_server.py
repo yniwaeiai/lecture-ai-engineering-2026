@@ -1,4 +1,4 @@
-"""第5回: MCP サーバーとクライアントの配線テスト（LLM も API キーも使わない）。
+"""第6回: MCP サーバーとクライアントの配線テスト（LLM も API キーも使わない）。
 
 app/mcp_servers.json の glossary サーバーを実際に起動し（stdio）、TestModel で
 「ツールが MCP 経由で公開され、呼ばれ、結果が戻るか」を確かめる。
@@ -16,7 +16,7 @@ from pydantic_ai.models.test import TestModel
 from app.agent import MCP_CONFIG, build_mcp_agent
 
 GLOSSARY_TOOL = "glossary_search_glossary"  # 設定ファイルのサーバー名 "glossary" が前に付く
-QUIZ_TOOL = "glossary_make_quiz"  # 第5回 宿題で公開した make_quiz
+QUIZ_TOOL = "glossary_make_quiz"  # 第6回 宿題で公開した make_quiz
 
 
 def _glossary_only_config(tmp_path):
