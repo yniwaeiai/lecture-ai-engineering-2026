@@ -1,0 +1,986 @@
+{
+ "gemini-3.5-flash-lite/empty/1": {
+  "01": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "unsure",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash-lite/empty/2": {
+  "01": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "unsure",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "unsure"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "unsure",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "unsure",
+   "lecture_mark": "fail",
+   "overall": "unsure"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash-lite/empty/3": {
+  "01": {
+   "grounding": "unsure",
+   "scope": "unsure",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "unsure"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "fail",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "fail",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash-lite/mark/1": {
+  "01": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "05": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "09": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  }
+ },
+ "gemini-3.5-flash-lite/mark/2": {
+  "01": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "09": {
+   "grounding": "unsure",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "unsure"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash-lite/mark/3": {
+  "01": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "02": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "unsure",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "unsure"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "10": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "pass",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  }
+ },
+ "gemini-3.5-flash/empty/1": {
+  "01": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "fail",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash/empty/2": {
+  "01": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "fail",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash/empty/3": {
+  "01": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "fail",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash/mark/1": {
+  "01": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "fail",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash/mark/2": {
+  "01": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "04": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "fail",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "fail",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  }
+ },
+ "gemini-3.5-flash/mark/3": {
+  "01": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "02": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "03": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "04": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "05": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "06": {
+   "grounding": "pass",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "pass"
+  },
+  "07": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "08": {
+   "grounding": "pass",
+   "scope": "fail",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "09": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  },
+  "10": {
+   "grounding": "fail",
+   "scope": "pass",
+   "hint": "pass",
+   "clarity": "fail",
+   "lecture_mark": "pass",
+   "overall": "fail"
+  }
+ }
+}

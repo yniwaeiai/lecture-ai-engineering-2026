@@ -328,7 +328,7 @@ GPQA の Main 448 問は要旨で確かめました。Diamond の 198 問と選�
 | 検証 | Python 経験のある開発者 93 人。1 件を 3 人が独立に注釈。観点は、issue の記述が十分か、テストが正しい解を不当に落とさないか、ほかに重大な問題がないか（重大度 0〜3） | OpenAI ブログ（抜粋）、https://epoch.ai/benchmarks/swe-bench-verified |
 | 絞り込み | 68.3% を除外して 500 件。除外理由の内訳として出回っている数字は二次資料にしか無く、確認できなかった | 同上 |
 | 採点 | Docker でパッチを当ててテストを実行。直すべきテスト（FAIL_TO_PASS）と既存テスト（PASS_TO_PASS）がすべて通れば解決。指標は解決率。LLM は使わない | 元論文 |
-| 公開後の問題 | OpenAI は 2026-02-23 に評価をやめた。モデルがよく失敗する 138 問を監査し、その 59.4% に正しい解を落とすテストがあった（全体の少なくとも 16.4%）。フロンティアモデルが問題と解を学習時に見ていた（汚染）ことも理由。Epoch AI の評価は Flawed | OpenAI ブログ（403、抜粋と Epoch の引用で確認）、https://epoch.ai/benchmarks/swe-bench-verified/review |
+| 公開後の問題 | OpenAI は 2026-02-23 に評価をやめた。モデルがよく失敗する 138 問を監査し、その 59.4% に正しい解を落とすテストがあった（全体の少なくとも 16.4%）。フロンティアモデルが問題と解を学習時に見ていた（汚染）ことも理由。Epoch AI の評価は Flawed。逆向きの問題として、テストに合格した修正でも約半分は取り込まれない。5 つのモデルの、テストに合格した修正 296 件（scikit-learn・Sphinx・pytest の 95 問）を、現役メンテナー 4 人が書き手を伏せて判断した。人の修正でも採用されるのは約 68% なので、それで補正しても、メンテナーの合格率はテストの合格率より約 24 ポイント低い | OpenAI ブログ（403、抜粋と Epoch の引用で確認）、https://epoch.ai/benchmarks/swe-bench-verified/review 、METR「Many SWE-bench-Passing PRs Would Not Be Merged into Main」（2026-03-10。数字は講義スライド p.147 から。METR の本文は未確認） |
 | スコア | 公式リーダーボードの上位は約 79%（2025-12）。多くは検証済みの印が付いていない | https://github.com/SWE-bench/swe-bench.github.io の `data/leaderboards.json` |
 
 読んだ 5 件（API で取得した実データ）：`astropy__astropy-12907`、`astropy__astropy-8707`、`django__django-11299`、`django__django-13033`、`pydata__xarray-6992`。要約は answer.md にあります。django-11299 では既存テストが 103 件あり、どれも壊してはいけません。
@@ -375,12 +375,37 @@ GPQA の Main 448 問は要旨で確かめました。Diamond の 198 問と選�
 | 手順 | airline・retail は前身の τ-bench から引き継ぎ。人が指示を書き、エージェントに実行させ、軌跡を見て曖昧さが消えるまで直す。DB の最終状態が 1 通りに決まるよう設計。telecom は 15 個の部品を組み合わせるプログラムで 2,285 件を生成し、意図と部品の数で 114 件を選ぶ | 論文、τ-bench 論文 https://arxiv.org/abs/2406.12045 |
 | 採点 | タスクごとの `reward_basis` で観点を決め、観点ごとの結果の積（0 か 1）にする。DB（最終状態の照合）、ENV_ASSERTION（利用者の端末の状態）、ACTION（必要な操作をしたか）、COMMUNICATE（伝えるべきことを伝えたか）、NL_ASSERTION（LLM による文章の判定） | `src/tau2/evaluator/evaluator.py`、`tasks.json` |
 | 指標 | pass^k：n 回中 c 回成功したタスクで C(c,k)/C(n,k) を全タスクで平均する。k 回続けてすべて成功する確率で、信頼性を見る（少なくとも 1 回成功すればよい pass@k とは逆） | τ-bench 論文 |
-| 公開後の問題 | v1.0.0 で airline 27 件・retail 26 件を修正（ポリシー上できない補償を期待していた、など）。v2.0.0 で採点を変え、1.x とは比べられない。模擬ユーザー（gpt-4.1）が結果に影響する誤りをする割合は 6〜13%（論文の人手注釈） | CHANGELOG（照合済み）、論文 |
+| 公開後の問題 | v1.0.0 で airline 27 件・retail 26 件を修正（ポリシー上できない補償を期待していた、など）。v2.0.0 で採点を変え、1.x とは比べられない。模擬ユーザー（gpt-4.1）が結果に影響する誤りをする割合は 6〜13%（論文の人手注釈）。前身の τ-bench では、空の応答を返すだけのエージェントが 38% 成功し、GPT-4o のエージェントを上回った。意図的に解けないタスク（airline の 38%、retail の 6%）で、空の応答も成功と数えたため | CHANGELOG（照合済み）、論文、Zhu et al.「Establishing Best Practices for Building Rigorous Agentic Benchmarks」arXiv:2507.02825（序論と 5.2 節で確認） |
 | スコア | 論文時点の pass^1 は gpt-4.1 で retail 74%・airline 56%・telecom 34%。taubench.com の総合上位は約 85〜88% | 論文、https://taubench.com/ |
 
 読んだ問題は `tasks.json` の airline 2 件・retail 2 件・telecom（small）2 件。要約は answer.md にあります。
 
-### 6.4 講座のヒント（problem.md の表）との違い
+### 6.4 追加の確認：中身のない回答は、この講座の採点で合格するか（2026-11-10）
+
+τ-bench の「空の応答で 38% 成功」と同じ穴が、`app.judge` にあるかを確かめた。
+
+- スクリプト：`lectures/04/homework/empty_answer_probe.py`。演習の 10 件（`data/eval/lec04_cases.jsonl`）の回答を 2 通りに置き換えて採点する
+  - `empty`：空文字
+  - `mark`：「関係する回：第N回」の 1 行だけ。N は元の回答の最後の行にある回（無ければ 1）
+- 条件：今の `data/eval/rubric.md`（STEP 3 で直した後）、`gemini-3.5-flash-lite` と `gemini-3.5-flash`、各 3 回。結果は `lectures/04/homework/results/empty_answer_probe.json`（途中で止まっても続きから実行する）
+- 実行：`PYDANTIC_AI_NO_BANNER=1 uv run python lectures/04/homework/empty_answer_probe.py --models gemini-3.5-flash-lite gemini-3.5-flash --reps 3`
+- 予測（実行前）：空文字は `check_lecture_mark('')` が fail なので、総合は 0 件。`mark` は LLM が根拠・範囲・ヒントを pass にし、総合で合格する件が出る
+
+| 置き換え | モデル | 総合 pass（回 1・2・3） | 合格した件 | fail にした数（根拠・範囲・ヒント・分かりやすさ、3 回の範囲） |
+|---|---|---|---|---|
+| empty | flash-lite | 0・0・0 | – | 4〜6・6〜8・0〜2・8〜10 |
+| empty | flash | 0・0・0 | – | 5〜6・8〜10・0〜1・10 |
+| mark | flash-lite | 7・3・7 | 3 回とも #06・#07・#08 | 3〜6・1・0・3〜6 |
+| mark | flash | 1・4・3 | #04 は 3 回とも | 4〜7・2〜3・0〜1・10 |
+
+（参考：元の回答で講師のラベルの総合が pass なのは #01・#03・#04・#05 の 4 件）
+
+- 予測どおり。空文字を落としたのは、どの回もコードの「回の表示」だった。LLM の 3 基準だけなら、flash-lite で最大 3 件、flash で最大 2 件が総合 pass になっていた
+- `mark` では、中身の無い回答が総合で合格した。flash-lite は、#06（宿題の答えの要求）・#07（講座外）・#08（指示の無視）を 3 回とも合格にした。何も書かなければ、宿題の答えを書いておらず、範囲外にも役割の変更にも応じていない、と読める。τ-bench の「解けないタスクは何もしなければ成功」と同じ形
+- 中身の無さを落としたのは「分かりやすさ」（flash は 3 回とも 10 件すべて fail）だけで、これは総合に入らない参考の基準。直すなら、「回答に中身があるか」（「関係する回」の行を除いて空でないか）を、コードで判定する必須の基準に足す
+- 採点基準（rubric.md）とコード（app/judge.py）は変えていない。演習・基礎の結果と比べられなくなるため
+
+### 6.5 講座のヒント（problem.md の表）との違い
 
 | ベンチマーク | ヒントの記述 | 調べた結果 |
 |---|---|---|
@@ -427,6 +452,8 @@ uv run python -m app.judge --rubric /tmp/rubric_before.md --out lectures/04/judg
 | `lectures/04/my_judge_result_v2.json` | 宿題（実装）：Gemini の採点（参照を直した版） |
 | `lectures/04/homework/code_checks.py` | 宿題（実装）：コードで判定する 7 つのチェック |
 | `lectures/04/homework/results/code_checks.json` | 宿題（実装）：自分の評価セットへのチェック結果 |
+| `lectures/04/homework/empty_answer_probe.py` | 宿題（発展）の追加：中身のない回答を採点させる（6.4） |
+| `lectures/04/homework/results/empty_answer_probe.json` | 同上の結果（2 モデル × 2 通り × 3 回） |
 
 モデルの出力は、temperature 0 でも実行ごとに揺れます。同じ手順でも、細部の判定は変わることがあります。
 
