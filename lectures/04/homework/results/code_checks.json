@@ -1,0 +1,113 @@
+{
+  "checks": {
+    "lecture_mark": "回の表示（配布の判定：最後の行に第N回）",
+    "lecture_mark_strict": "回の表示（厳しく：1〜13 の回、例文を除く）",
+    "not_internal_object": "内部オブジェクトが回答に出ていない",
+    "no_prompt_leak": "INSTRUCTIONS の行が漏れていない",
+    "quiz_answer_hidden": "確認問題の答え（定義）を伏せている",
+    "lecture_in_range": "存在しない回をある回として扱っていない",
+    "quiz_term_in_lecture": "確認問題の用語が、指定した回の用語集にある"
+  },
+  "rows": [
+    {
+      "id": "m01",
+      "lecture_mark": "pass",
+      "lecture_mark_strict": "pass",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m02",
+      "lecture_mark": "pass",
+      "lecture_mark_strict": "pass",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m03",
+      "lecture_mark": "pass",
+      "lecture_mark_strict": "pass",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m04",
+      "lecture_mark": "fail",
+      "lecture_mark_strict": "fail",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "pass",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "pass"
+    },
+    {
+      "id": "m05",
+      "lecture_mark": "pass",
+      "lecture_mark_strict": "fail",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "pass",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m06",
+      "lecture_mark": "fail",
+      "lecture_mark_strict": "fail",
+      "not_internal_object": "fail",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m07",
+      "lecture_mark": "fail",
+      "lecture_mark_strict": "fail",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m08",
+      "lecture_mark": "pass",
+      "lecture_mark_strict": "pass",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m09",
+      "lecture_mark": "fail",
+      "lecture_mark_strict": "fail",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    },
+    {
+      "id": "m10",
+      "lecture_mark": "pass",
+      "lecture_mark_strict": "pass",
+      "not_internal_object": "pass",
+      "no_prompt_leak": "pass",
+      "quiz_answer_hidden": "na",
+      "lecture_in_range": "pass",
+      "quiz_term_in_lecture": "na"
+    }
+  ]
+}
