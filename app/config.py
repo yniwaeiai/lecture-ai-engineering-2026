@@ -19,6 +19,9 @@ RAG_GRAPH = ROOT / "data/rag_data/graph.json"
 RAG_DB = Path(os.getenv("AIE_RAG_DB", str(ROOT / "data/rag_data/index.sqlite3")))
 RAG_DOCUMENT_IDS = ("lec01-main", "lec02-main", "lec03-main")
 RAG_TOP_K = 5
+# 第5回 宿題（実装）: 検索結果の各ページに、同じ資料の前後 N ページの本文も付ける。0 なら付けない（配布版と同じ）
+#   例: export AIE_RAG_NEIGHBORS=1
+RAG_NEIGHBOR_PAGES = int(os.getenv("AIE_RAG_NEIGHBORS", "0"))
 GRAPH_START_K = 3
 GRAPH_HOPS = 2
 GRAPH_MAX_RESULTS = 10

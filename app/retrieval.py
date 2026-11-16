@@ -16,7 +16,7 @@ import sqlite_vec
 
 from app.config import (
     EMBEDDING_DIMENSIONS, EMBEDDING_MAX_TOKENS, EMBEDDING_MODEL,
-    RAG_DB, RAG_DOCUMENT_IDS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
+    RAG_DB, RAG_DOCUMENT_IDS, RAG_NEIGHBOR_PAGES, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
     RAG_GRAPH, GRAPH_START_K, GRAPH_HOPS, GRAPH_MAX_RESULTS,
 )
 
@@ -125,7 +125,15 @@ def open_index(path: Path):
 
 
 def search(query: str) -> list[dict]:
-    """質問を埋め込み、近いページを最大RAG_TOP_K件返す。"""
+    """質問を埋め込み、近いページを最大RAG_TOP_K件返す。RAG_NEIGHBOR_PAGES > 0 なら前後ページも付ける。"""
+    hits = vector_search(query)
+    if RAG_NEIGHBOR_PAGES > 0:
+        hits = add_neighbors(hits, load_pages(RAG_SOURCE), RAG_NEIGHBOR_PAGES)
+    return hits
+
+
+def vector_search(query: str) -> list[dict]:
+    """質問を埋め込み、近いページを最大RAG_TOP_K件返す（前後ページは付けない。Graph の入口にも使う）。"""
     if not isinstance(query, str) or not query.strip():
         raise ValueError("検索語が空です。")
     with open_index(RAG_DB) as db:
@@ -136,6 +144,28 @@ def search(query: str) -> list[dict]:
             FROM chunks ORDER BY distance, page_id LIMIT ?
         """, (sqlite_vec.serialize_float32(vector), RAG_TOP_K))
         return [dict(row) for row in rows]
+
+
+def add_neighbors(hits: list[dict], pages: list[dict], width: int = 1) -> list[dict]:
+    """第5回 宿題（実装）: 検索で見つかった各ページの直後に、同じ資料の前後 width ページの本文を足す。
+
+    - 前後は同じ document_id の中だけで探す（資料をまたがない。第2回の p.1 の前に第1回の最後のページを付けない）
+    - すでに入っているページ（検索結果どうしが隣り合う場合や、2 つの検索結果に共通の隣）は足さない
+    - 足したページには source="neighbor" と、どの検索結果の隣か（neighbor_of）を付ける。distance は持たない
+    検索結果の順位と件数（RAG_TOP_K）は変えない。
+    """
+    by_position = {(page["document_id"], page["page"]): page for page in pages}
+    included = {hit["page_id"] for hit in hits}
+    results = []
+    for hit in hits:
+        results.append({**hit, "source": "search"})
+        for offset in [o for d in range(1, width + 1) for o in (-d, d)]:   # 前1, 後1, 前2, 後2, ...
+            page = by_position.get((hit["document_id"], hit["page"] + offset))
+            if page is None or page["page_id"] in included:
+                continue
+            included.add(page["page_id"])
+            results.append({**page, "distance": None, "source": "neighbor", "neighbor_of": hit["page_id"]})
+    return results
 
 
 def search_graph(query: str) -> dict:
@@ -151,7 +181,7 @@ def search_graph(query: str) -> dict:
             adjacent[a].add(b)
             adjacent[b].add(a)
 
-    seeds = [hit for hit in search(query) if hit["page_id"] in pages][:min(GRAPH_START_K, GRAPH_MAX_RESULTS)]
+    seeds = [hit for hit in vector_search(query) if hit["page_id"] in pages][:min(GRAPH_START_K, GRAPH_MAX_RESULTS)]
     seed_ids = {seed["page_id"] for seed in seeds}
     results, candidates = [], {}
     for rank, seed in enumerate(seeds):
@@ -208,4 +238,6 @@ if __name__ == "__main__":
         print(f"章: {result['section']}")
         print(f"タイトル: {result['title']}")
         print(f"ページ: {result['page']}")
+        if result.get("source") == "neighbor":
+            print(f"（前後ページ: {result['neighbor_of']} の隣として追加）")
         print(f"\n{result['content']}")
