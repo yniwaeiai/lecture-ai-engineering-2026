@@ -1,0 +1,17 @@
+[model] gemini-3.5-flash-lite
+ご質問いただいた「今回作ったRAGの実測平均応答時間と正答率」についてですが、対象としている第1〜3回の講義資料内には、実際に作成したRAGの具体的な実測値（平均応答時間や正答率の数値）は記載されていません。
+
+講義資料では、RAGなどのモデルを評価する際の考え方として以下のように説明されています。
+
+* **同じ質問でも答えは毎回変わるため、1回試しただけでは評価にならない。同じ質問を複数回聞いて平均やばらつきを見る必要がある**（第2回・PDF p.13）
+
+ご自身が作成されたRAGの平均応答時間や正答率を確認するためには、実際に評価用データセット（評価セット）を用いて複数回テストを行い、その結果を集計・計測していただく必要があります。どのようなテストデータや条件で計測を行おうとしているか、設計の段階から見直してみるとヒントになるかもしれません。
+
+--- trace ---
+[tool call]   search_graph({'query': 'RAG 応答時間 正答率 実測'})
+[tool return] search_graph -> {"seeds": [{"page_id": "lec02-main-p013", "document_id": "lec02-main", "lecture": 2, "document_title": "基盤モデルの仕組み", "sec…
+[tool call]   search_graph({'query': 'RAG 実装 演習 課題 実測 応答時間'})
+[tool return] search_graph -> {"seeds": [{"page_id": "lec01-main-p049", "document_id": "lec01-main", "lecture": 1, "document_title": "AIエンジニアリング概論とAIコ…
+[time] 回答完了まで 4.75 秒（検索・埋め込みを含む）
+[usage] 入力 15,252 tokens / 出力 253 tokens / モデル応答 3 回
+[cost] 生成APIの推定コスト: $0.004109 USD（埋め込み・索引構築分は含まない）
