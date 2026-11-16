@@ -158,6 +158,53 @@ def browse_tree(node_id: str | None = None) -> str:
         return json.dumps({"error": str(e)}, ensure_ascii=False)
 
 
+def search_outline(query: str) -> str:  # v1（比較の再現用）：全部の章の目次、タイトルだけ
+    """資料を検索し、関連ページの本文と、そのページがある章の目次（ページ番号とタイトル）を返す。
+
+    queryに調べたい内容を指定する。目次にあって本文がないページは、browse_tree にページIDを渡すと全文を読める。
+    """
+    import sqlite3
+    from google.genai.errors import APIError
+    from app.retrieval import search_outline as search
+
+    try:
+        return json.dumps(search(query, min_hits=1), ensure_ascii=False)
+    except (ValueError, OSError, sqlite3.Error) as e:
+        return json.dumps({"error": str(e)}, ensure_ascii=False)
+    except APIError as e:
+        return json.dumps({"error": api_error_message(e.code)}, ensure_ascii=False)
+
+
+def search_chapters(query: str) -> str:
+    """資料を検索し、関連ページの本文と、そのページがある章の目次（ページ番号・タイトル・先頭文）を返す。
+
+    queryに調べたい内容を指定する。目次にあって本文がないページは、read_pages にページIDの一覧を渡すとまとめて読める。
+    """
+    import sqlite3
+    from google.genai.errors import APIError
+    from app.retrieval import search_outline as search
+
+    try:
+        return json.dumps(search(query, lead=True), ensure_ascii=False)
+    except (ValueError, OSError, sqlite3.Error) as e:
+        return json.dumps({"error": str(e)}, ensure_ascii=False)
+    except APIError as e:
+        return json.dumps({"error": api_error_message(e.code)}, ensure_ascii=False)
+
+
+def read_pages(page_ids: list[str]) -> str:
+    """指定したページIDの本文と引用情報を、まとめて返す（1回で最大10ページ）。
+
+    page_idsには search_chapters の目次にあるページIDを並べる。
+    """
+    from app.retrieval import read_pages as read
+
+    try:
+        return json.dumps(read(page_ids), ensure_ascii=False)
+    except (ValueError, OSError) as e:
+        return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+
 def search_graph(query: str) -> str:
     """資料を検索し、前後ページ・共通用語をたどって関連ページの本文と引用情報を返す。
 

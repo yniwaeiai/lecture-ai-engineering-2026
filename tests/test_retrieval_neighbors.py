@@ -62,3 +62,55 @@ def test_real_materials_have_no_gaps_inside_documents():
     for doc in {p["document_id"] for p in pages}:
         numbers = sorted(p["page"] for p in pages if p["document_id"] == doc)
         assert numbers == list(range(numbers[0], numbers[-1] + 1)), doc
+
+
+# ---------------------------------------------------------------- 第5回 宿題（発展）: search_outline
+def test_search_outline_returns_hits_and_the_outline_of_each_section(monkeypatch):
+    # 第3回の Part 4 ツール（p.22〜32）から 2 ページ、Part 6 メモリから 1 ページがヒットした場合
+    hits = [{"page_id": "lec03-main-p023", "lecture": 3, "page": 23},
+            {"page_id": "lec03-main-p030", "lecture": 3, "page": 30},
+            {"page_id": "lec03-main-p039", "lecture": 3, "page": 39}]
+    monkeypatch.setattr(retrieval, "vector_search", lambda query: hits)
+    data = retrieval.search_outline("q", min_hits=1)                   # v1・v2 と同じく、ヒットのある章すべて
+    assert data["results"] == hits                                     # 本文はベクトル検索の結果そのまま
+    assert [o["section_id"] for o in data["outlines"]] == ["lec03-main-s022", "lec03-main-s037"]  # 章ごとに 1 回
+    tools_outline = data["outlines"][0]
+    assert [p["page"] for p in tools_outline["pages"]] == list(range(22, 33))
+    assert [p["page"] for p in tools_outline["pages"] if p["in_results"]] == [23, 30]
+    assert all("content" not in p for p in tools_outline["pages"])    # 目次には本文を入れない
+
+
+def test_search_outline_for_a_page_directly_under_the_lecture(monkeypatch):
+    # 第2回の p.4 は章ではなく講義の直下にある。講義の直下のページだけを並べ、章のノードは含めない
+    monkeypatch.setattr(retrieval, "vector_search", lambda query: [{"page_id": "lec02-main-p004", "lecture": 2, "page": 4}])
+    outline = retrieval.search_outline("q")["outlines"][0]
+    assert outline["section_id"] == "lec02-main"
+    assert [p["page"] for p in outline["pages"]] == [1, 2, 3, 4, 5, 6]
+
+
+def test_search_outline_with_lead_adds_first_sentence(monkeypatch):
+    monkeypatch.setattr(retrieval, "vector_search", lambda query: [{"page_id": "lec03-main-p023", "lecture": 3, "page": 23}])
+    pages = retrieval.search_outline("q", lead=True)["outlines"][0]["pages"]
+    assert all(p["lead"] and "\n" not in p["lead"] for p in pages)
+    assert "lead" not in retrieval.search_outline("q")["outlines"][0]["pages"][0]   # v1（lead なし）は変わらない
+
+
+def test_read_pages_returns_several_pages_once_each():
+    data = retrieval.read_pages(["lec03-main-p025", "lec03-main-p026", "lec03-main-p025", "lec09-main-p001"])
+    assert [p["page_id"] for p in data["pages"]] == ["lec03-main-p025", "lec03-main-p026"]
+    assert data["not_found"] == ["lec09-main-p001"] and data["skipped"] == []
+    many = [f"lec03-main-p{n:03d}" for n in range(20, 33)]
+    data = retrieval.read_pages(many)
+    assert len(data["pages"]) == retrieval.READ_PAGES_MAX and data["skipped"] == many[retrieval.READ_PAGES_MAX:]
+
+
+def test_outline_only_for_top_section_and_sections_with_two_hits(monkeypatch):
+    # 1 位は Part 6（1 件）、Part 4 に 2 件、Part 2 に 1 件 → v3 は Part 6（1 位）と Part 4（2 件）だけ
+    hits = [{"page_id": "lec03-main-p039", "lecture": 3, "page": 39},
+            {"page_id": "lec03-main-p023", "lecture": 3, "page": 23},
+            {"page_id": "lec03-main-p013", "lecture": 3, "page": 13},
+            {"page_id": "lec03-main-p030", "lecture": 3, "page": 30}]
+    monkeypatch.setattr(retrieval, "vector_search", lambda query: hits)
+    assert [o["section_id"] for o in retrieval.search_outline("q", min_hits=2)["outlines"]] == \
+        ["lec03-main-s037", "lec03-main-s022"]
+    assert len(retrieval.search_outline("q", min_hits=1)["outlines"]) == 3

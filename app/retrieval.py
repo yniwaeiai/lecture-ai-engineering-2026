@@ -6,7 +6,7 @@ import math
 import re
 import sqlite3
 from contextlib import contextmanager
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from pathlib import Path
 
 from google import genai
@@ -49,6 +49,11 @@ def load_pages(source: Path = RAG_SOURCE) -> list[dict]:
     return pages
 
 
+def lead_sentence(text: str) -> str:
+    """本文の先頭文。句点がなければ先頭行（browse_tree の候補文と同じ規則）。"""
+    return re.split(r"(?<=[。！？])|\n", text.strip(), maxsplit=1)[0]
+
+
 def browse_tree(node_id: str | None = None) -> dict:
     """直下のページは先頭文、指定したページ自身は全文を返す。"""
     tree = json.loads(RAG_TREE.read_text(encoding="utf-8"))
@@ -61,7 +66,7 @@ def browse_tree(node_id: str | None = None) -> dict:
         if node["kind"] == "page":
             info.update({key: value for key, value in pages[node["id"]].items() if key != "page_id"})
             if not full:
-                info["content"] = re.split(r"(?<=[。！？])|\n", info["content"].strip(), maxsplit=1)[0]
+                info["content"] = lead_sentence(info["content"])
         return info
 
     remaining = [tree]
@@ -166,6 +171,65 @@ def add_neighbors(hits: list[dict], pages: list[dict], width: int = 1) -> list[d
             included.add(page["page_id"])
             results.append({**page, "distance": None, "source": "neighbor", "neighbor_of": hit["page_id"]})
     return results
+
+
+# 目次を付ける章：1 位のページがある章と、ヒットが OUTLINE_MIN_HITS 件以上ある章（v3）。1 なら全部の章（v1・v2）
+OUTLINE_MIN_HITS = 2
+
+
+def search_outline(query: str, lead: bool = False, min_hits: int | None = None) -> dict:
+    """第5回 宿題（発展）: ベクトル検索の結果に、各ページがある章の目次（ページ番号とタイトルだけ）を付けて返す。
+
+    - results：ベクトル検索の上位 RAG_TOP_K 件（本文つき。search と同じ。前後ページは付けない）
+    - outlines：results のページが属する章ごとに、その章の全ページの page_id・page・title。本文は含めない。
+      in_results は、そのページの本文が results に入っているか
+    lead=True なら、目次の各ページに先頭文（lead）も付ける（v2。章の構成なら本文を読まずに答えられる）。
+    min_hits（既定 OUTLINE_MIN_HITS）：目次を付けるのは、1 位のページがある章と、ヒットが min_hits 件以上ある章だけ（v3）。
+    ヒットが多くの章に散る質問（資料にない質問など）で、目次が章の数だけ膨らむのを防ぐ。
+    目次にあって本文のないページは、v1 では browse_tree(page_id)、v2 では read_pages で全文を読む。データは tree.json と検索DBをそのまま使い、
+    新しい索引は作らない。章の直下ではなく講義の直下にあるページ（第2回の p.1〜6 など）は、講義の直下のページだけを並べる。
+    """
+    hits = vector_search(query)
+    tree = json.loads(RAG_TREE.read_text(encoding="utf-8"))
+    pages = {page["page_id"]: page for page in load_pages(RAG_SOURCE)} if lead else {}
+    parent = {}
+    remaining = [node for node in tree["children"] if node["id"] in RAG_DOCUMENT_IDS]
+    while remaining:
+        node = remaining.pop()
+        for child in node.get("children", []):
+            parent[child["id"]] = node
+            remaining.append(child)
+    hit_ids = {hit["page_id"] for hit in hits}
+    min_hits = OUTLINE_MIN_HITS if min_hits is None else min_hits
+    counts = Counter(parent[hit["page_id"]]["id"] for hit in hits if hit["page_id"] in parent)
+    outlines, seen = [], set()
+    for rank, hit in enumerate(hits):
+        node = parent.get(hit["page_id"])
+        if node is None or node["id"] in seen or (rank > 0 and counts[node["id"]] < min_hits):
+            continue
+        seen.add(node["id"])
+        outlines.append({
+            "section_id": node["id"], "lecture": hit["lecture"], "section": node["title"],
+            "pages": [{"page_id": child["id"], "page": child["page"], "title": child["title"],
+                       **({"lead": lead_sentence(pages[child["id"]]["content"])} if lead else {}),
+                       "in_results": child["id"] in hit_ids}
+                      for child in node.get("children", []) if child["kind"] == "page"],
+        })
+    return {"results": hits, "outlines": outlines}
+
+
+READ_PAGES_MAX = 10
+
+
+def read_pages(page_ids: list[str]) -> dict:
+    """第5回 宿題（発展 v2）: 指定した複数ページの本文と引用情報を、1 回でまとめて返す（重複は除く。最大 READ_PAGES_MAX）。"""
+    if not page_ids:
+        raise ValueError("page_ids が空です。")
+    pages = {page["page_id"]: page for page in load_pages(RAG_SOURCE)}
+    wanted = list(dict.fromkeys(page_ids))
+    return {"pages": [pages[pid] for pid in wanted[:READ_PAGES_MAX] if pid in pages],
+            "not_found": [pid for pid in wanted if pid not in pages],
+            "skipped": wanted[READ_PAGES_MAX:]}
 
 
 def search_graph(query: str) -> dict:
