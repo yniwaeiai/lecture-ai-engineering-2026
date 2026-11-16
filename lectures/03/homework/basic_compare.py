@@ -21,7 +21,7 @@ from pydantic_ai.messages import ToolCallPart, ToolReturnPart
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))  # リポジトリ直下（app パッケージ）を import できるようにする
 from app import tools  # noqa: E402
-from app.agent import INSTRUCTIONS, build_model  # noqa: E402
+from app.agent import GLOSSARY_INSTRUCTIONS as INSTRUCTIONS, build_model  # noqa: E402  第5回で既定の INSTRUCTIONS が検索用に変わったので、用語集版を使う
 
 MINIMAL_INSTRUCTIONS = "あなたはAIエンジニアリング講座（AIE2026）の学習支援エージェントです。\n"
 

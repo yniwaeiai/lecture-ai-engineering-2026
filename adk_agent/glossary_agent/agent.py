@@ -7,7 +7,7 @@
 from google.adk.agents import Agent
 
 from app import tools
-from app.agent import INSTRUCTIONS
+from app.agent import GLOSSARY_INSTRUCTIONS as INSTRUCTIONS  # 第5回で既定の INSTRUCTIONS が検索用に変わったので、用語集版を使う
 
 root_agent = Agent(
     model="gemini-3.5-flash-lite",

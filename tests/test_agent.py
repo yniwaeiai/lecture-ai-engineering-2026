@@ -5,22 +5,25 @@ TestModel は実際のLLMを呼ばない偽モデルで、登録されたツー�
 「ツールが登録され、呼ばれ、結果がモデルに戻るか」を確かめられる。
 """
 
+import json
+
 from pydantic_ai import DeferredToolRequests
 from pydantic_ai.messages import ModelResponse, RetryPromptPart, TextPart, ToolCallPart, ToolReturnPart
 from pydantic_ai.models.function import FunctionModel
 from pydantic_ai.models.test import TestModel
 
 from app import tools
-from app.agent import agent, ask_approvals, run_with_approval
+from app.agent import agent, ask_approvals, run_with_approval, study_agent
 
-BASE_TOOLS = {"search_glossary", "get_lecture_summary"}
+BASE_TOOLS = {"search_materials"}
 
 
 def _parts(result, kind):
     return [p for m in result.all_messages() for p in m.parts if isinstance(p, kind)]
 
 
-def test_base_tools_are_registered_and_called():
+def test_base_tools_are_registered_and_called(monkeypatch):
+    monkeypatch.setattr("app.retrieval.search", lambda *args, **kwargs: [])
     model = TestModel()
     with agent.override(model=model):
         result = agent.run_sync("LoRAとは？")
@@ -39,10 +42,33 @@ def test_base_tools_are_registered_and_called():
     assert result.output
 
 
-def test_glossary_result_reaches_the_model():
-    model = TestModel(call_tools=["search_glossary"])
+def test_material_result_reaches_the_model(monkeypatch):
+    hit = {"page_id": "lec02-main-p052", "lecture": 2, "page": 52, "content": "元の重みは固定"}
+    monkeypatch.setattr("app.retrieval.search", lambda *args, **kwargs: [hit])
+    model = TestModel(call_tools=["search_materials"])
     with agent.override(model=model):
         result = agent.run_sync("RAGとは？")
+    returns = _parts(result, ToolReturnPart)
+    assert returns and returns[0].tool_name == "search_materials"
+    assert json.loads(returns[0].content)["results"] == [hit]
+
+
+STUDY_TOOLS = {"search_glossary", "get_lecture_summary", "make_quiz", "save_learning_log"}
+
+
+def test_study_agent_has_glossary_tools_and_default_agent_does_not():
+    # 第5回の取得方法の比較に用語集ツールが混ざらないよう、第3回〜第6回のツールは study_agent にだけ登録する
+    model = TestModel(call_tools=[])
+    study_agent.run_sync("ツール一覧", model=model)
+    assert {t.name for t in model.last_model_request_parameters.function_tools} == STUDY_TOOLS
+    model = TestModel(call_tools=[])
+    agent.run_sync("ツール一覧", model=model)
+    assert {t.name for t in model.last_model_request_parameters.function_tools} == BASE_TOOLS
+
+
+def test_glossary_result_reaches_the_model():
+    with study_agent.override(model=TestModel(call_tools=["search_glossary"])):
+        result = study_agent.run_sync("RAGとは？")
     returns = _parts(result, ToolReturnPart)
     assert returns and returns[0].tool_name == "search_glossary"
 
@@ -59,8 +85,8 @@ def _scripted_model(*calls):
 
 
 def test_make_quiz_is_registered_and_returns_to_the_model():
-    with agent.override(model=_scripted_model(("make_quiz", {"lecture": 2}))):
-        result = agent.run_sync("第2回の確認問題を出して")
+    with study_agent.override(model=_scripted_model(("make_quiz", {"lecture": 2}))):
+        result = study_agent.run_sync("第2回の確認問題を出して")
     returns = _parts(result, ToolReturnPart)
     assert returns and returns[0].tool_name == "make_quiz"
     assert "の意味は？" in returns[0].content
@@ -68,8 +94,8 @@ def test_make_quiz_is_registered_and_returns_to_the_model():
 
 def test_make_quiz_out_of_range_is_returned_as_retry_and_can_be_corrected():
     # 範囲外の回で呼ぶと、エラー文が再試行の指示として戻り、モデルは正しい回で呼び直せる
-    with agent.override(model=_scripted_model(("make_quiz", {"lecture": 99}), ("make_quiz", {"lecture": 2}))):
-        result = agent.run_sync("第99回の確認問題を出して")
+    with study_agent.override(model=_scripted_model(("make_quiz", {"lecture": 99}), ("make_quiz", {"lecture": 2}))):
+        result = study_agent.run_sync("第99回の確認問題を出して")
     retries = _parts(result, RetryPromptPart)
     assert len(retries) == 1 and "1〜13" in str(retries[0].content)
     assert [p.tool_name for p in _parts(result, ToolReturnPart)] == ["make_quiz"]
@@ -78,19 +104,19 @@ def test_make_quiz_out_of_range_is_returned_as_retry_and_can_be_corrected():
 def _run_save_log(monkeypatch, tmp_path, reply):
     """TestModel に save_learning_log を呼ばせ、承認の問いに reply と答えたときの結果を返す。"""
     monkeypatch.setattr(tools, "LEARNING_LOG_DIR", tmp_path)
-    with agent.override(model=TestModel(call_tools=["save_learning_log"])):
-        first = agent.run_sync("今日の学びを記録して")
+    with study_agent.override(model=TestModel(call_tools=["save_learning_log"])):
+        first = study_agent.run_sync("今日の学びを記録して")
         assert isinstance(first.output, DeferredToolRequests)          # 実行されずに承認待ちで止まる
         assert [c.tool_name for c in first.output.approvals] == ["save_learning_log"]
         assert list(tmp_path.iterdir()) == []                          # この時点ではまだ保存されていない
         results = ask_approvals(first.output, answer=lambda _: reply)
-        return agent.run_sync(message_history=first.all_messages(), deferred_tool_results=results)
+        return study_agent.run_sync(message_history=first.all_messages(), deferred_tool_results=results)
 
 
 def test_run_with_approval_counts_usage_of_both_runs(monkeypatch, tmp_path):
     monkeypatch.setattr(tools, "LEARNING_LOG_DIR", tmp_path)
     model = TestModel(call_tools=["save_learning_log"])
-    result = run_with_approval(agent, "今日の学びを記録して", model, answer=lambda _: "y")
+    result = run_with_approval(study_agent, "今日の学びを記録して", model, answer=lambda _: "y")
     assert isinstance(result.output, str)
     assert result.usage.requests == 2                                  # 承認待ちで止まる前の 1 回 ＋ 再開後の 1 回
 

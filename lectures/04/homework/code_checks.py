@@ -21,9 +21,9 @@ NUM_LECTURES = tools.NUM_LECTURES
 
 
 def instructions_text() -> str:
-    """app/agent.py の INSTRUCTIONS を、Pydantic AI を import せずに読む（文字列リテラルを取り出す）。"""
+    """app/agent.py の GLOSSARY_INSTRUCTIONS（第5回の取り込み前の INSTRUCTIONS）を、Pydantic AI を import せずに読む（文字列リテラルを取り出す）。"""
     src = (ROOT / "app" / "agent.py").read_text(encoding="utf-8")
-    m = re.search(r'INSTRUCTIONS = """\\\n(.*?)"""', src, re.S)
+    m = re.search(r'\bGLOSSARY_INSTRUCTIONS = """\\\n(.*?)"""', src, re.S)
     return m.group(1) if m else ""
 
 

@@ -39,7 +39,7 @@ CASES = [
 
 def check_instructions_in_sync() -> None:
     src = (ROOT / "app" / "agent.py").read_text(encoding="utf-8")
-    original = re.search(r'INSTRUCTIONS = """\\\n(.*?)"""', src, re.S).group(1)
+    original = re.search(r'\bGLOSSARY_INSTRUCTIONS = """\\\n(.*?)"""', src, re.S).group(1)
     assert original == INSTRUCTIONS, "ADK 版の INSTRUCTIONS が app/agent.py と食い違っています"
 
 

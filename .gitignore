@@ -15,3 +15,5 @@ learning_log/
 
 # ADK の adk web が作るセッションの保存先（第3回 宿題・発展）
 .adk/
+# 第5回: 資料から再生成する検索DB
+.cache/rag/

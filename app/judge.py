@@ -303,7 +303,8 @@ def compare_labels(a: dict[str, dict], b: dict[str, dict], name_a: str, name_b: 
 # ---------------------------------------------------------------- 回答の生成（宿題・実装）
 def generate_answers(cases: list[dict], wait: float = 1.0) -> list[dict]:
     """評価セットの各質問を自分のエージェント（app.agent）に投げ、回答を埋める。"""
-    from app.agent import agent, build_model
+    from app.agent import build_model
+    from app.agent import study_agent as agent  # 第4回で採点した用語集エージェント（第5回で既定の agent は検索用になった）
 
     model = build_model()
     print(f"回答を生成中 {len(cases)} 件 ", end="", flush=True)
