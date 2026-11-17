@@ -1,0 +1,30 @@
+[model] gemini-3.5-flash-lite
+第3回の「Part 4 ツール」の章では、以下の話題がこの順序で扱われています。
+
+1. **Part 4 ツールの導入（タイトルスライド）**
+   - 話題：MCP、長い処理と並列化、評価の概要（第3回・PDF p.22）
+2. **ツール（モデルの呼び出しとハーネスの実行）**
+   - 話題：モデルが呼び出しを出力し、実行はハーネスが行うこと。読み取りと書き込み（行動）の区別について（第3回・PDF p.23）
+3. **MCP（モデルコンテキストプロトコル）**
+   - 話題：シェルツールでCLIを直接使う場合と、MCPサーバーを通す場合（サーバー側での権限・認可・監査管理）の比較について（第3回・PDF p.24）
+4. **ツールをバックグラウンドで実行**
+   - 話題：時間のかかる処理（全テストの実行など）を待たずに、別のツールで作業を進め、終わったら結果を受け取る非同期実行の仕組みと課題について（第3回・PDF p.29）
+5. **ツールのバッチコール**
+   - 話題：前の結果を使わない呼び出しは1回の応答でまとめて（バッチで）呼び、結果を使うものは順に呼ぶ使い分けについて（第3回・PDF p.30）
+6. **ツール検索：ツールの説明も、必要なときだけ読み込む**
+   - 話題：ツールが増えた際に、すべての定義を最初からコンテキストに入れるのではなく、必要なときだけツール検索（tool_search）で探して読み込む仕組みについて（第3回・PDF p.32）
+
+--- trace ---
+[tool call]   search_materials({'query': 'Part 4 ツール'})
+[tool return] search_materials -> {"results": [{"page_id": "lec03-main-p022", "document_id": "lec03-main", "lecture": 3, "document_title": "AIエージェント", "se…
+[tool call]   search_materials({'query': 'Part 4 ツール MCP'})
+[tool return] search_materials -> {"results": [{"page_id": "lec03-main-p022", "document_id": "lec03-main", "lecture": 3, "document_title": "AIエージェント", "se…
+[tool call]   search_materials({'query': 'Part 4 ツール 評価'})
+[tool return] search_materials -> {"results": [{"page_id": "lec03-main-p022", "document_id": "lec03-main", "lecture": 3, "document_title": "AIエージェント", "se…
+[tool call]   search_materials({'query': 'Part 4 ツール page 25 26 27 28 31 33'})
+[tool return] search_materials -> {"results": [{"page_id": "lec03-main-p022", "document_id": "lec03-main", "lecture": 3, "document_title": "AIエージェント", "se…
+[tool call]   search_materials({'query': '第3回 PDF ページ'})
+[tool return] search_materials -> {"results": [{"page_id": "lec03-main-p001", "document_id": "lec03-main", "lecture": 3, "document_title": "AIエージェント", "se…
+[time] 回答完了まで 12.83 秒（検索・埋め込みを含む）
+[usage] 入力 26,235 tokens / 出力 505 tokens / モデル応答 6 回
+[cost] 生成APIの推定コスト: $0.006946 USD（埋め込み・索引構築分は含まない）

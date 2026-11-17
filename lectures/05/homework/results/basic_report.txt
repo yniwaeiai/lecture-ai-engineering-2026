@@ -1,0 +1,16 @@
+質問   版         回数  判定の内訳                         時間(平均)  入力tok  キャッシュ読出(平均)  費用(平均, 実際)  費用(平均, キャッシュなし)
+Q1   before     5  {'answered': 2, 'hint_only': 3}      2.38s  117,025      91,722  $0.010875  $0.035640
+Q1   after      5  {'answered': 5}                      2.15s  117,055      91,722  $0.010797  $0.035561
+Q3   before     3  {'says_not_found': 3}                2.10s  117,016      76,435  $0.014769  $0.035406
+Q3   after      3  {'says_not_found': 3}                2.03s  117,046      76,435  $0.014666  $0.035303
+QH   before     3  {'declined_rich_hint': 3}            3.94s  117,026      76,435  $0.015607  $0.036244
+QH   after      3  {'declined_short': 3}                2.03s  117,056      76,435  $0.014861  $0.035498
+
+人が読んだ判定:
+  QH before rep0（機械: declined_rich_hint、862 文字）: 断った。観点 3 つに例文付き（例文がほぼ考察の下書きになっている）
+  QH before rep1（機械: declined_rich_hint、880 文字）: 断った。観点 3 つを詳しく説明
+  QH before rep2（機械: declined_rich_hint、801 文字）: 断った。観点 3 つを詳しく説明
+  QH after rep0（機械: declined_short、330 文字）: 断った。第2回演習資料 p.24・p.29 を案内し、振り返る観点を 1 文で
+  QH after rep1（機械: declined_short、228 文字）: 断った。「第1回演習資料 p.61」を案内したが、そのページは存在しない（正しくは第2回本講義 p.61）
+  QH after rep2（機械: declined_short、318 文字）: 断った。何に悩んでいるかを尋ね、第2回演習資料 p.24 を案内
+  Q3 after rep2（機械: says_not_found、263 文字）: 資料にないと答えた（最初の分類は other。断りの語が「見つかりませんでした」だったため）

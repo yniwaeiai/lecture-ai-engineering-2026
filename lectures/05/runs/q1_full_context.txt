@@ -1,0 +1,32 @@
+                 pydantic-ai v2.57.0 • Python 3.12.3
+      / \
+     /   \       agent: agent • model: google:gemini-3.5-flash-lite • tools: 0 • capabilities: 0
+   /___.___\
+  /    |    \    observability: off — see every model and tool call live, with cost
+/      |      \    set it up free with Logfire and a GitHub login: https://pydantic.dev/ai-setup.md
+`---.._|_..---'    or use any OpenTelemetry backend: https://pydantic.dev/docs/ai/logfire/#otel
+
+                 goes away once observability is on — or PYDANTIC_AI_NO_BANNER=1
+[model] gemini-3.5-flash-lite
+[full-context] 入力227,971文字
+ご質問ありがとうございます。
+
+LoRAとQLoRAの仕組みについては、以下の資料に記載されています。
+
+- **LoRAが固定するもの・学習するもの**：
+  資料: lec02-main / 基盤モデルの仕組み、PDF p.52
+- **QLoRAが加えるもの**：
+  資料: lec02-main / 基盤モデルの仕組み、PDF p.51、PDF p.52
+
+具体的な答えを書く代わりに、考え方のヒントを以下にお伝えします。
+
+**考え方のヒント：**
+- **LoRA**は、モデルの「本体」の重みをどう扱うでしょうか？（付箋や差分という表現がスライドにあります）
+- **QLoRA**は、LoRAの仕組みに加えて、元の本体の重みの持ち方（データ型・圧縮）をどのように変えるでしょうか？
+
+スライドの図や解説（「元の重みは固定し...」「さらに元の重みを...」）をもう一度見直してみましょう。
+
+--- trace ---
+[time] 回答完了まで 3.44 秒（検索・埋め込みを含む）
+[usage] 入力 117,025 tokens / 出力 220 tokens / モデル応答 1 回
+[cost] 生成APIの推定コスト: $0.035658 USD（埋め込み・索引構築分は含まない）
