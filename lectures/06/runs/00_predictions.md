@@ -6,3 +6,4 @@
 - 基礎：エージェント側を変えずに `glossary_get_lecture_summary` が一覧に増え、「第2回では何を学びますか？」で `lecture=2` で呼ばれる
 - 実装（return）：範囲外のメッセージは `[tool return]` に出て、モデルは呼び直さずに利用者へ説明する
 - 実装（raise ValueError）：MCP の SDK はふつうの例外のメッセージを外に出さない（改訂前の課題で確かめた）。`[tool error]` には「Error executing tool make_quiz」だけが出て、「1〜13」は届かない
+- 実装（追加、第99回で 0/18 回しか呼ばれなかったあとに書いた）：「第14回のクイズを作って」と説明文に範囲なし（--norange）なら、モデルは 14 で呼ぶ。return と ToolError はメッセージが届き、利用者に 1〜13 を案内する。ValueError は届かず、モデルは回数を推測で答える

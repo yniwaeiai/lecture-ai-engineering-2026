@@ -7,7 +7,8 @@ app/mcp_servers.json の glossary サーバーを実際に起動し（stdio）�
 import json
 
 import pytest
-from pydantic_ai.messages import ToolCallPart, ToolReturnPart
+from pydantic_ai.messages import ModelResponse, RetryPromptPart, TextPart, ToolCallPart, ToolReturnPart
+from pydantic_ai.models.function import FunctionModel
 from pydantic_ai.models.test import TestModel
 
 from app.mcp_agent import (
@@ -89,3 +90,44 @@ def test_config_mistakes_are_reported_in_words(tmp_path, text, expected):
     path.write_text(text, encoding="utf-8")
     with pytest.raises(ConfigError, match=expected):
         read_config(path)
+
+
+# ---------------------------------------------------------------- 第6回 宿題（基礎・実装）
+SUMMARY_TOOL = "glossary_get_lecture_summary"
+QUIZ_TOOL = "glossary_make_quiz"
+
+
+def _call_once(tool, args):
+    """1 回目は tool を args で呼び、2 回目で回答するモデル（TestModel は引数を選べない）。"""
+    def respond(messages, info):
+        if not any(isinstance(m, ModelResponse) for m in messages):
+            return ModelResponse(parts=[ToolCallPart(tool, args)])
+        return ModelResponse(parts=[TextPart("回答")])
+    return FunctionModel(respond)
+
+
+def test_summary_and_quiz_tools_are_exposed_without_changing_the_agent(tmp_path):
+    model = TestModel(call_tools=[])
+    build_mcp_agent(_glossary_only_config(tmp_path)).run_sync("ツール一覧", model=model)
+
+    offered = {t.name: t for t in model.last_model_request_parameters.function_tools}
+    assert {GLOSSARY_TOOL, SUMMARY_TOOL, QUIZ_TOOL} <= offered.keys()
+    assert "1〜13" in offered[QUIZ_TOOL].description  # 説明文の範囲が、MCP 越しにも見える
+
+
+def test_quiz_through_mcp_returns_a_question(tmp_path):
+    result = build_mcp_agent(_glossary_only_config(tmp_path)).run_sync(
+        "第2回の確認問題", model=_call_once(QUIZ_TOOL, {"lecture": 2}))
+    returns = [p for p in _parts(result, ToolReturnPart) if p.tool_name == QUIZ_TOOL]
+    assert returns and json.loads(str(returns[0].content))["lecture"] == 2
+
+
+@pytest.mark.parametrize("lecture", [0, 14, 99])
+def test_out_of_range_lecture_comes_back_as_a_return_message(tmp_path, lecture):
+    """範囲外は例外にせず、直し方を書いたメッセージを return する（[tool return] として届く）。"""
+    result = build_mcp_agent(_glossary_only_config(tmp_path)).run_sync(
+        f"第{lecture}回の確認問題", model=_call_once(QUIZ_TOOL, {"lecture": lecture}))
+    returns = [p for p in _parts(result, ToolReturnPart) if p.tool_name == QUIZ_TOOL]
+    assert returns, "範囲外でも、ツールの結果として戻る"
+    assert f"第{lecture}回はありません" in str(returns[0].content) and "1〜13" in str(returns[0].content)
+    assert not _parts(result, RetryPromptPart), "エラー（再試行の指示）にはならない"
