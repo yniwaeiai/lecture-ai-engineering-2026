@@ -1,0 +1,3 @@
+ M app/mcp_server.py
+?? lectures/04/commentary-comparison.md
+?? lectures/06/runs/basic_git_status.txt
