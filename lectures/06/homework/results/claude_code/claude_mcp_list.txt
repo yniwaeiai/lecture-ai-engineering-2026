@@ -1,0 +1,23 @@
+# claude mcp list（Claude Code 2.1.327、2026-11-24）。<リポジトリ直下> は置き換え済み。claude.ai のコネクタの行は除いた
+
+## 演習の app/mcp_servers.json をそのまま .mcp.json にした場合（mcp.json.copied_as_is）
+Checking MCP server health…
+
+glossary: uv run --directory <リポジトリ直下> python -m app.mcp_server - ⏸ Pending approval (run `claude` to approve)
+fetch: uvx mcp-server-fetch==2026.11.11 --no-readability-js - ⏸ Pending approval (run `claude` to approve)
+
+MCP config diagnostics ⚠
+
+For help configuring MCP servers, see: https://code.claude.com/docs/en/mcp
+
+[Has warnings] Project config (shared via .mcp.json)
+Location: <作業用ディレクトリ>/asis/.mcp.json
+ └ [Warning] [aws] mcpServers.aws: Skipped — MCP server "aws" has a "url" but no "type"; add "type": "http" (or "sse" / "ws") to this entry
+
+
+## claude mcp add --scope project で登録した場合（mcp.json.from_cli_add）
+Checking MCP server health…
+
+glossary: uv run --directory <リポジトリ直下> python -m app.mcp_server - ⏸ Pending approval (run `claude` to approve)
+fetch: uvx mcp-server-fetch==2026.11.11 --no-readability-js - ⏸ Pending approval (run `claude` to approve)
+aws: https://knowledge-mcp.global.api.aws (HTTP) - ⏸ Pending approval (run `claude` to approve)

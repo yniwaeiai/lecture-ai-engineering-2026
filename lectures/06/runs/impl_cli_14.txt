@@ -1,0 +1,13 @@
+[server] glossary: コマンドで起動（uv run python -m app.mcp_server）
+[server] fetch: コマンドで起動（uvx mcp-server-fetch==2026.11.11 --no-readability-js）
+[server] aws: URL に接続（https://knowledge-mcp.global.api.aws）
+[model] gemini-3.5-flash-lite
+[tools] MCP サーバー（app/mcp_servers.json）
+AIE2026（AIエンジニアリング講座）は全13回のため、第14回は存在しません。
+
+第1回から第13回の中から、クイズを出題したい回（例えば、用語が登録されている第1回〜第4回、第6回など）を指定していただければ、その回の確認問題を作成します！どの回のクイズをご希望ですか？
+
+--- trace ---
+[tool call]   glossary_make_quiz({'lecture': 14})
+[tool return] glossary_make_quiz -> 第14回はありません。AIE2026 は全13回なので、lecture は 1〜13 の整数で指定してください。用語集に用語がある回: 1, 2, 3, 4, 6…
+[usage] 入力 5,825 tokens / 出力 103 tokens / モデル応答 2 回

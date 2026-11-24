@@ -1,0 +1,11 @@
+[server] glossary: コマンドで起動（uv run python -m app.mcp_server）
+[server] fetch: コマンドで起動（uvx mcp-server-fetch==2026.11.11 --no-readability-js）
+[server] aws: URL に接続（https://knowledge-mcp.global.api.aws）
+[model] gemini-3.5-flash-lite
+[tools] MCP サーバー（app/mcp_servers.json）
+AIエンジニアリング講座（AIE2026）は全13回のため、第99回は存在しません。
+
+指定できる回（第1回〜第13回）の中から、クイズを出したい回を指定してください。
+
+--- trace ---
+[usage] 入力 2,868 tokens / 出力 52 tokens / モデル応答 1 回

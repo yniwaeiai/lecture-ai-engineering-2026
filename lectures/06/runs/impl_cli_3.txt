@@ -1,0 +1,18 @@
+[server] glossary: コマンドで起動（uv run python -m app.mcp_server）
+[server] fetch: コマンドで起動（uvx mcp-server-fetch==2026.11.11 --no-readability-js）
+[server] aws: URL に接続（https://knowledge-mcp.global.api.aws）
+[model] gemini-3.5-flash-lite
+[tools] MCP サーバー（app/mcp_servers.json）
+それでは、第3回に関する確認問題（クイズ）を出題します！
+
+**【第3回 確認問題】**
+「**Pi**」とは何でしょうか？ その意味や特徴について答えてみてください。
+
+（答えが分かったら、ぜひ教えてくださいね！）
+
+関連回：第3回
+
+--- trace ---
+[tool call]   glossary_make_quiz({'lecture': 3})
+[tool return] glossary_make_quiz -> {"lecture": 3, "question": "「Pi」の意味は？", "answer": "ターミナルで動くオープンソース（MITライセンス）のコーディングエージェント。最小限の機能とシステムプロンプトで構成し、利用者が拡張して使…
+[usage] 入力 5,863 tokens / 出力 83 tokens / モデル応答 2 回

@@ -1,0 +1,33 @@
+[server] glossary: コマンドで起動（uv run python -m app.mcp_server）
+[server] fetch: コマンドで起動（uvx mcp-server-fetch==2026.11.11 --no-readability-js）
+[server] aws: URL に接続（https://knowledge-mcp.global.api.aws）
+[model] gemini-3.5-flash-lite
+[tools] MCP サーバー（app/mcp_servers.json）
+第2回では、**「ファインチューニングとLoRA」**をテーマに学びます。
+
+主な学習内容は以下の通りです：
+
+1. **事前学習とファインチューニング**
+   - 事前学習とファインチューニングの違い、それぞれが向く場面・向かない場面の理解。
+2. **SFT（教師ありファインチューニング）**
+   - 入力と望ましい出力のペアを使った学習方法と、データの質・形式の重要性。
+3. **PEFTとLoRA**
+   - 全パラメータを更新するのではなく、小さな低ランク行列だけを学習することでGPUメモリや容量を大幅に削減する技術（LoRA）の仕組み。
+4. **QLoRA**
+   - ベースモデルを4bitに量子化してLoRAを適用する手法との関係性。
+5. **過学習の注意点**
+   - 検証データを用いた性能確認の重要性。
+
+また、Google Colab上で小さなモデルを実際にLoRAで学習させる演習も行います。
+
+関連回：第2回
+
+--- trace ---
+[tool call]   glossary_get_lecture_summary({'lecture': 2})
+[tool return] glossary_get_lecture_summary -> # 第2回 ファインチューニングとLoRA
+
+## この回のねらい
+
+- 事前学習とファインチューニングの違い、ファインチューニングが向く場面と向かない場面を理解する
+- LoRAの考え方を理解し、Google Colab上で小さなモデルを…
+[usage] 入力 5,942 tokens / 出力 252 tokens / モデル応答 2 回
