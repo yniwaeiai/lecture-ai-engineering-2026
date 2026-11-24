@@ -1,0 +1,6 @@
+rep1 one: [tool call]   glossary_search_glossary({'query': '3レベル'}) [usage] 入力 715 tokens / 出力 144 tokens / モデル応答 2 回 
+rep1 three: [tool call]   glossary_search_glossary({'query': '3レベル'}) [usage] 入力 5,383 tokens / 出力 207 tokens / モデル応答 2 回 
+rep2 one: [tool call]   glossary_search_glossary({'query': '3レベル'}) [usage] 入力 715 tokens / 出力 177 tokens / モデル応答 2 回 
+rep2 three: [tool call]   glossary_search_glossary({'query': '3レベル'}) [usage] 入力 5,383 tokens / 出力 161 tokens / モデル応答 2 回 
+rep3 one: [tool call]   glossary_search_glossary({'query': '3レベル'}) [usage] 入力 715 tokens / 出力 129 tokens / モデル応答 2 回 
+rep3 three: [tool call]   glossary_search_glossary({'query': '3レベル'}) [usage] 入力 5,383 tokens / 出力 165 tokens / モデル応答 2 回 
