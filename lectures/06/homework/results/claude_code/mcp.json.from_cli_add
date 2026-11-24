@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "glossary": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "<リポジトリ直下>",
+        "python",
+        "-m",
+        "app.mcp_server"
+      ],
+      "env": {}
+    },
+    "fetch": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch==2026.11.11",
+        "--no-readability-js"
+      ],
+      "env": {}
+    },
+    "aws": {
+      "type": "http",
+      "url": "https://knowledge-mcp.global.api.aws"
+    }
+  }
+}
